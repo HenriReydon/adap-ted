@@ -1,1 +1,1 @@
-Projet Adap'Ted.
+<h2>Project description</h2>
