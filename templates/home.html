@@ -1,0 +1,50 @@
+<ion-content>
+  <div id="bghome">
+  </div>
+
+  <div class="list">
+    <div class="item item-divider">
+      <h2>{{texts.h_warning}}</h2>
+  <!--     <button class="button alterable-help button-outline button-calm" ng-click="helpHomeWarning()">
+          <i class="ion-help" style="margin:0 auto;"></i>
+      </button>     -->
+    </div>
+
+    <div class="item item-button-right">    
+      {{texts.m_no_network}}
+      <button class="button button-energized">
+        <i class="icon ion-refresh"></i>
+      </button>  
+    </div>
+
+    <div class="item item-divider">
+      <h2>  </h2>
+  <!--     <button class="button alterable-help button-outline button-calm" ng-click="helpHomeUtilisation()">
+          <i class="ion-help" style="margin:0 auto;"></i>
+      </button>    --> 
+    </div>
+
+    <!--div class="item item-input-inset">
+      <label class="item-input-wrapper">
+        <input type="text" placeholder="Reference (ex. AB123)" class="inputs {{parameters.classCode}}" ng-model="codeInterface.text" ng-change="checkCode()" maxlength="5">
+      </label>
+      <button ng-click="buildInterface()" ng-disabled="parameters.disabledRefButton" class="button icon-right ion-arrow-right-a button-clear button-special" style="margin-left:3px;">
+        {{texts.b_use_ref}}
+      </button>
+    </div-->
+
+    <div class="item item-button-right">    
+      {{texts.m_new_interface}}
+      <button ui-sref="alterable" class="button button-positive">
+        <i class="icon ion-ios-compose"></i>
+      </button>  
+    </div>
+
+    <div class="item item-button-right">    
+      {{texts.m_history}}
+      <button ui-sref="history" class="button button-positive">
+        <i class="icon ion-ios-book-outline"></i>
+      </button>  
+    </div>
+  </div>
+</ion-content>

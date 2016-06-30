@@ -1,0 +1,51 @@
+<ion-content>
+	<div class="item item-divider" style="margin-top:42px;">
+		<h2>{{texts.h_tasks}}</h2>
+	</div>
+
+	<br>
+
+	<div class="button-bar">
+		<button class="{{task.class}}" style="padding: 3px 0;" ng-click="showTask(task)" ng-repeat="task in tasks" ng-disabled="tasks[0].disabled">
+		  {{task.intitule}}
+		</button>
+	</div>
+
+	<div ng-repeat="task in tasks" ng-show="task.show">
+		<div class="card">
+	  	<div class="item item-divider" style="font-size:9px !important;text-align:center;">
+	  		{{texts.previous}} : {{(task.steps[task.currentStep-1].infos.intitule) ? task.steps[task.currentStep-1].infos.intitule : texts.begin}}
+	  	</div>
+	  	<div class="item item-text-wrap" style="font-size:15px !important;text-align:center;">
+	  		<span class="spanetape" >{{zeroInit(task.currentStep+1)}}</span>
+	    	{{task.steps[task.currentStep].infos.intitule}}
+	  	</div>
+	  	<div class="item item-divider" style="font-size:9px !important;text-align:center;">
+		    {{texts.next}} : {{(task.steps[task.currentStep+1].infos.intitule) ? task.steps[task.currentStep+1].infos.intitule : texts.end}}
+	  	</div>
+		</div>
+
+	  <button class="button button-full button-royal" ng-click="begin(task)" ng-disabled="(parameters.disabledLaunchTask || tasks[0].id == 0)">
+	    {{texts.b_launch}}
+	  </button>
+
+		<div class="button-bar">
+		  <button class="button button-positive" ng-click="nextStep('s', task, task.currentStep)" ng-disabled="parameters.disabledTask">
+		    {{texts.b_learn_alone}}
+		  </button>
+		  <button class="button button-balanced" ng-click="nextStep('g', task, task.currentStep)" ng-disabled="parameters.disabledTask">
+		    {{texts.b_learn_guided}}
+		  </button>
+		</div>
+		
+	  <div class="row header">
+	    <div class="col">{{texts.hour}}</div>
+	    <div class="col" ng-repeat="step in task.steps">{{step.infos.ordre}}</div>
+	  </div>
+		<div class="row" ng-repeat="essais in task.data">
+			<div class="col">{{task.data[$index][0].heure}}</div>
+	  	<div class="{{(essai.mode == 'g') ? 'col col-red' : 'col col-green'}}" ng-repeat="essai in essais">{{essai.mode}}</div>
+	  </div>
+</div>
+
+</ion-content>
