@@ -1,0 +1,68 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>ADAP'TED</title>
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+
+    <!--Libraries -->
+        <script src="lib/ionic/js/ionic.bundle.js"></script>
+        <script src="cordova.js"></script>
+    <!--Routes-->  
+        <script src="js/app.js"></script>
+    <!--Controllers-->
+        <script src="js/controllers/mainCtrl.js"></script>
+        <script src="js/controllers/homeCtrl.js"></script>
+        <script src="js/controllers/historyCtrl.js"></script>
+        <script src="js/controllers/tabsCtrl.js"></script>
+        <script src="js/controllers/interfaceCtrl.js"></script>
+        <script src="js/controllers/alterableCtrl.js"></script>
+        <script src="js/controllers/tasksCtrl.js"></script>
+    <!--Directives-->
+        <script src="js/directives/interface.js"></script>
+        <script src="js/directives/compile.js"></script>
+    <!--Services-->
+        <script src="js/services/behaviors.js"></script>
+        <script src="js/services/bulles.js"></script>
+        <script src="js/services/colors.js"></script>
+        <script src="js/services/converter.js"></script>
+        <script src="js/services/interfaces.js"></script>
+        <script src="js/services/programmes.js"></script>
+        <script src="js/services/randomize.js"></script>
+        <script src="js/services/tasks.js"></script>
+    <!--Filters-->
+    <!--script src="js/filters/reverse.js"></script--> 
+    <!--Modules-->
+  </head>
+    <body ng-app="clicker" ng-controller="mainCtrl">
+        <ion-nav-bar class="bar-dark">
+            <ion-nav-buttons side="left">
+                <button ng-show="header_prepare || header_alterable || header_history || header_interface || header_tasks" class="top button button-icon button-clear ion-home" ui-sref="home">            
+                <button ng-show="header_home" class="button" ng-click="setLangage('french')" style="border:0px;padding: 0 1px;">
+                    <img src="img/french.png" width="24px" height="24px">
+                </button>
+                <button ng-show="header_home" class="button" ng-click="setLangage('english')" style="border:0px;padding: 0 5px;">
+                    <img src="img/english.png" width="24px" height="24px">
+                </button>
+                </button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                <button ng-show="header_home" class="button button-small button-light">
+                    {{texts.b_about}}
+                </button>
+                <!-- ion-navicon -->
+                <button ng-show="header_interface" class="top button button-icon button-clear ion-chevron-left" ng-click="openLeft()">
+                </button>
+                <a ng-show="header_interface" ui-sref="tasks" class="top button button-icon button-clear ion-forward"></a>
+                <button ng-show="header_interface" class="top button button-icon button-clear ion-chevron-right" ng-click="openRight()"></button>
+                <a ng-show="header_alterable" ui-sref="tabs.interface" class="top button button-icon button-clear ion-archive">
+                </a>
+                <a ng-show="header_tasks" ui-sref="tabs.interface" class="top button button-icon button-clear ion-reply">
+                </a>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+        <ion-nav-view></ion-nav-view>
+    </body>
+</html>

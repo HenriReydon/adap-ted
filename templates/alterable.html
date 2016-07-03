@@ -1,0 +1,78 @@
+<ion-content scroll="false">
+    <div class="list">
+        <div class="item item-divider" style="margin-top:42px;">
+            <h2>{{texts.h_occurences}}</h2>
+<!--             <button class="button alterable-help button-outline button-calm" ng-click="helpOccurence()">
+                <i class="ion-help" style="margin:0 auto;"></i>
+            </button> -->
+        </div>
+        <div class="button-bar">
+            <button class="button limit" ng-show="occurences[0].exist" style="{{occurences[0].style}}" disabled>
+                <span class="spanocc">00</span>
+                <br />
+                <div class="buttonlegend">{{occurences[0].behavior.name}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[1].exist" style="{{occurences[1].style}}" disabled>
+                <span class="spanocc">00</span>
+                <br />
+                <div class="buttonlegend">{{occurences[1].behavior.name}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[2].exist" style="{{occurences[2].style}}" disabled>
+                <span class="spanocc">00</span>
+                <br />
+                <div class="buttonlegend">{{occurences[2].behavior.name}}</div>
+            </button>            
+        </div>        
+        <div class="button-bar">
+            <button class="button limit" ng-show="occurences[3].exist" style="{{occurences[3].style}}" disabled>
+                <span class="spanocc">00</span>
+                <br />
+                <div class="buttonlegend">{{occurences[3].behavior.name}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[4].exist" style="{{occurences[4].style}}" disabled>
+                <span class="spanocc">00</span>
+                <br />
+                <div class="buttonlegend">{{occurences[4].behavior.name}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[5].exist" style="{{occurences[5].style}}" disabled>
+                <span class="spanocc">00</span>
+                <br />
+                <div class="buttonlegend">{{occurences[5].behavior.name}}</div>
+            </button>    
+            <button class="button limit" ng-click="addOccurence()" ng-show="occurences[6].exist">
+                <i class="ion-plus-round" style="margin:0 auto;font-size:36px;"></i>
+            </button>        
+        </div>
+
+		<div class="item item-divider">
+            <h2>{{texts.h_timers}}</h2>
+<!--             <button class="button alterable-help button-outline button-calm" ng-click="helpMinuteur()">
+                <i class="ion-help" style="margin:0 auto;"></i>
+            </button> -->
+		</div>
+        
+        <button class="button button-block" ng-show="minuteurs[0].exist" style="{{minuteurs[0].style}}" disabled>
+            <span class="spancpt">00</span>
+            <span class="buttonlegend">{{minuteurs[0].behavior.name}}</span>
+            <span class="spantimer">00:00:00</span>
+        </button>
+        <button class="button button-block" ng-show="minuteurs[1].exist" style="{{minuteurs[1].style}}" disabled>
+            <span class="spancpt">00</span>
+            <span class="buttonlegend">{{minuteurs[1].behavior.name}}</span>
+            <span class="spantimer">00:00:00</span>
+        </button>
+        <button class="button button-block" ng-show="minuteurs[2].exist" style="{{minuteurs[2].style}}" disabled>
+            <span class="spancpt">00</span>
+            <span class="buttonlegend">{{minuteurs[2].behavior.name}}</span>
+            <span class="spantimer">00:00:00</span>
+        </button>
+        <button class="button button-block" ng-show="minuteurs[3].exist" style="{{minuteurs[3].style}}" disabled>
+            <span class="spancpt">00</span>
+            <span class="buttonlegend">{{minuteurs[3].behavior.name}}</span>
+            <span class="spantimer">00:00:00</span>
+        </button>
+        <button class="button button-block" ng-click="addMinuteur()"  ng-show="minuteurs[4].exist">
+            <i class="ion-plus-round" style="margin:0 auto;font-size:36px;"></i>
+        </button>
+    </div>
+</ion-content>

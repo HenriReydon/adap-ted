@@ -1,0 +1,50 @@
+<ion-content>
+    <div class="item item-divider" style="margin-top:42px;">
+        <h2>{{texts.h_prepare}}</h2>
+<!--         <button class="button alterable-help button-outline button-calm" ng-click="helpPrepare()">
+            <i class="ion-help" style="margin:0 auto;"></i>
+        </button> -->
+    </div>
+    <div class="row">
+        <div class="col col-50">
+            <label class="item-input-wrapper" style="{{parameters.team_color}}">
+                <input type="password" class="inputs {{parameters.class}}" value="{{preparation.team_code}}" placeholder="{{texts.h_placeholder_prepare}}" readonly>
+            </label>
+        </div>
+        <div class="col">
+            <button class="button icon-left ion-arrow-left-b button-outline button-energized" ng-click="clear()">Clear</button>
+        </div>
+        <div class="col">
+            <button class="button icon-right ion-loop button-outline button-balanced" ng-click="valid()" ng-disabled="parameters.isokdisabled">OK</button>
+        </div>
+    </div>
+    <div class="list">
+        <div class="button-bar numeric-pad">
+            <button ng-repeat="pad in preparation.halfpads1" ng-disabled="parameters.ispaddisabled" ng-click="code(pad.num)" class="button button-outline button-positive code">
+                <span>{{pad.num}}</span>
+            </button>
+        </div>    
+        <div class="button-bar numeric-pad">
+           <button ng-repeat="pad in preparation.halfpads2" ng-disabled="parameters.ispaddisabled" ng-click="code(pad.num)" class="button button-outline button-positive code">
+                <span>{{pad.num}}</span>
+            </button>
+        </div>
+    
+		<div class="item item-divider">
+            <h2>{{preparation.team.name}}</h2>
+		</div>
+        <div class="list" ng-show="parameters.showSelectKids">
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Choisir l'observé
+                </div>
+                <select ng-model="selected_kid">
+                    <option ng-repeat="kid in preparation.kids" value="{{kid}}">{{kid.name}}</option>
+                </select>
+            </label>
+            <button class="button button-balanced button-outline" style="float: right" ng-click="continu(selected_kid)">
+                Valider et continuer
+            </button>
+        </div>
+    </div>
+</ion-content>
