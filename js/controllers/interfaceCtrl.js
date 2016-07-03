@@ -1,4 +1,4 @@
-app.controller('interfaceCtrl', function($scope, bulles, $timeout, $rootScope, $state, colors, converter, tasks, programmes)
+app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $state, colors, converter, tasks, programmes)
 {
     window.addEventListener('orientationchange', doOnOrientationChange);
     function doOnOrientationChange()
@@ -34,7 +34,7 @@ app.controller('interfaceCtrl', function($scope, bulles, $timeout, $rootScope, $
 
         for(var d in data.min)
         {
-            $scope.minuteurs.push({"min":0, 
+            $scope.minuters.push({"min":0, 
                                    "sec":0, 
                                    "msec":0, 
                                    "occurrences":0, 
@@ -42,13 +42,13 @@ app.controller('interfaceCtrl', function($scope, bulles, $timeout, $rootScope, $
                                    "mode": true, 
                                    'style': 'min-height:'+$scope.parameters.heightMinuteurs+'px !important;border-color: '+colors.palette_min(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(d), 
                                    "exist": true, "data": []});
-            $scope.minuteurs[$scope.minuteurs.length-1].behavior = data.min[d];
+            $scope.minuters[$scope.minuters.length-1].behavior = data.min[d];
         }
     });      
     // AIDE ???
     $scope.afficherBulleComportement = function()
     {
-    	bulles.behavior($scope);
+    	popups.behavior($scope);
     }
 
     $scope.incrementeOccurence = function(index)
@@ -64,29 +64,29 @@ app.controller('interfaceCtrl', function($scope, bulles, $timeout, $rootScope, $
 
     $scope.actionMinuteur = function(index)
     {
-    	if($scope.minuteurs[index].timer==undefined)
+    	if($scope.minuters[index].timer==undefined)
     	{
-    		$scope.minuteurs[index].timer = $timeout(function()
+    		$scope.minuters[index].timer = $timeout(function()
     		{
-                $scope.minuteurs[index].hourTmp = new Date();
-    			timer($scope.minuteurs[index]);
+                $scope.minuters[index].hourTmp = new Date();
+    			timer($scope.minuters[index]);
     		},100);
     	}
     	else
 		{
-            $scope.minuteurs[index].occurrences++;
-            $timeout.cancel($scope.minuteurs[index].timer);
-            d = $scope.minuteurs[index].min+":"+$scope.minuteurs[index].sec+":"+$scope.minuteurs[index].msec;
-            $scope.minuteurs[index].data.push({"h": $scope.minuteurs[index].hourTmp, "d": d});
-			$scope.minuteurs[index] = {"min":0, 
+            $scope.minuters[index].occurrences++;
+            $timeout.cancel($scope.minuters[index].timer);
+            d = $scope.minuters[index].min+":"+$scope.minuters[index].sec+":"+$scope.minuters[index].msec;
+            $scope.minuters[index].data.push({"h": $scope.minuters[index].hourTmp, "d": d});
+			$scope.minuters[index] = {"min":0, 
                                        "sec":0, 
                                        "msec":0, 
-                                       "occurrences":$scope.minuteurs[index].occurrences, 
-                                       "behavior":$scope.minuteurs[index].behavior, 
+                                       "occurrences":$scope.minuters[index].occurrences, 
+                                       "behavior":$scope.minuters[index].behavior, 
                                        "timer": undefined, 
                                        "mode": true, 
                                        "exist": true, 
-                                       'style': 'min-height:'+$scope.parameters.heightMinuteurs+'px !important;border-color: '+colors.palette_min(index)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(index), "data": $scope.minuteurs[index].data};
+                                       'style': 'min-height:'+$scope.parameters.heightMinuteurs+'px !important;border-color: '+colors.palette_min(index)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(index), "data": $scope.minuters[index].data};
 		}
     }
 
@@ -115,118 +115,17 @@ app.controller('interfaceCtrl', function($scope, bulles, $timeout, $rootScope, $
     
     function transfererOccurences()
     {
-        if(/*bad*/false) 
-            sqlButtonOccurence = "-1"; 
-
-        return sqlButtonOccurence;       
+        return -1;       
     }
 
     function transfererMinuteurs()
     {
-        var dateString;        
-        var sqlButtonMinuteurs = "INSERT INTO minuteurs (id_usager, id_comportement, id_situation, debut, duree, datestring) VALUES";
-
-        for(var d in $scope.minuteurs)
-        {
-            if($scope.minuteurs[d].mode)
-            {
-                if($scope.minuteurs[d].data.length > 0)
-                {
-                    for(var i in $scope.minuteurs[d].data)
-                    {
-                        var j = converter.zeroInit($scope.minuteurs[d].data[i].h.getDate());
-                        var m = converter.zeroInit($scope.minuteurs[d].data[i].h.getMonth()+1);
-                        var y = $scope.minuteurs[d].data[i].h.getFullYear();
-                        dateString = y+"-"+m+"-"+j;
-                        var timing = converter.zeroInit($scope.minuteurs[d].data[i].h.getHours())+":"+
-                                     converter.zeroInit($scope.minuteurs[d].data[i].h.getMinutes())+":"+
-                                     converter.zeroInit($scope.minuteurs[d].data[i].h.getSeconds());
-                        sqlButtonMinuteurs += " (" + $scope.preparation.usager.id + ", ";
-                        sqlButtonMinuteurs += $scope.occurences[d].behavior.id + ", ";
-                        sqlButtonMinuteurs += $scope.preparation.sit.id + ", ";
-                        sqlButtonMinuteurs += converter.getDateInSeconds(dateString, timing) + ", ";
-                        sqlButtonMinuteurs += converter.getTimerInSeconds($scope.minuteurs[d].data[i].d) + ", '";
-                        sqlButtonMinuteurs += dateString + "')," 
-                    }
-                }
-            }
-        }
-
-        sqlButtonMinuteurs = converter.setCharAt(sqlButtonMinuteurs, [sqlButtonMinuteurs.length-1], ';');
-        if(sqlButtonMinuteurs == "INSERT INTO minuteurs (id_usager, id_comportement, id_situation, debut, duree, datestring) VALUE;") 
-            sqlButtonMinuteurs = "-1";
-
-        return sqlButtonMinuteurs;
+        return -1;
     }
 
     function transfererProgramme()
     {
-        var dateString;
-        var sqlProgrammeData = "INSERT INTO reponses (id_usager, id_comportement, id_situation, debut, reaction, realisation, seul, guide, none, appr, datestring) VALUES";
-
-        for(var d in $scope.apprentissages)
-        {
-            if($scope.apprentissages[d].data.length > 0)
-            {
-                for(var i in $scope.apprentissages[d].data)
-                {
-                    var j = converter.zeroInit($scope.apprentissages[d].data[i].debut.getDate());
-                    var m = converter.zeroInit($scope.apprentissages[d].data[i].debut.getMonth()+1);
-                    var y = $scope.apprentissages[d].data[i].debut.getFullYear();
-                    dateString = y+"-"+m+"-"+j;         
-                    var timing = converter.zeroInit($scope.apprentissages[d].data[i].debut.getHours())+":"+
-                                 converter.zeroInit($scope.apprentissages[d].data[i].debut.getMinutes())+":"+
-                                 converter.zeroInit($scope.apprentissages[d].data[i].debut.getSeconds());
-
-                    sqlProgrammeData += " (" + $scope.preparation.usager.id+", ";
-                    sqlProgrammeData += $scope.apprentissages[d].infos.id+", ";
-                    sqlProgrammeData += $scope.preparation.sit.id + ", ";
-                    sqlProgrammeData += converter.getDateInSeconds(dateString, timing)+", ";
-                    sqlProgrammeData += converter.getTimerInSeconds($scope.apprentissages[d].data[i].reaction)+", ";
-                    sqlProgrammeData += converter.getTimerInSeconds($scope.apprentissages[d].data[i].realisation)+", ";
-                    sqlProgrammeData += $scope.apprentissages[d].data[i].seul+", ";
-                    sqlProgrammeData += $scope.apprentissages[d].data[i].guide+", ";
-                    sqlProgrammeData += $scope.apprentissages[d].data[i].none+", ";
-                    sqlProgrammeData += "1, '";
-                    sqlProgrammeData += dateString+"'),";
-                }
-            }
-        }
-
-        for(var d in $scope.maintiens)
-        {
-            if($scope.maintiens[d].data.length > 0)
-            {
-                for(var i in $scope.maintiens[d].data)
-                {
-                    var j = converter.zeroInit($scope.maintiens[d].data[i].debut.getDate());
-                    var m = converter.zeroInit($scope.maintiens[d].data[i].debut.getMonth()+1);
-                    var y = $scope.maintiens[d].data[i].debut.getFullYear();
-                    dateString = y+"-"+m+"-"+j;         
-                    var timing = converter.zeroInit($scope.maintiens[d].data[i].debut.getHours())+":"+
-                                 converter.zeroInit($scope.maintiens[d].data[i].debut.getMinutes())+":"+
-                                 converter.zeroInit($scope.maintiens[d].data[i].debut.getSeconds());
-
-                    sqlProgrammeData += " (" + $scope.preparation.usager.id+", ";
-                    sqlProgrammeData += $scope.maintiens[d].infos.id+", ";
-                    sqlProgrammeData += $scope.preparation.sit.id + ", ";
-                    sqlProgrammeData += converter.getDateInSeconds(dateString, timing)+", ";
-                    sqlProgrammeData += converter.getTimerInSeconds($scope.maintiens[d].data[i].reaction)+", ";
-                    sqlProgrammeData += converter.getTimerInSeconds($scope.maintiens[d].data[i].realisation)+", ";
-                    sqlProgrammeData += $scope.maintiens[d].data[i].seul+", ";
-                    sqlProgrammeData += $scope.maintiens[d].data[i].guide+", ";
-                    sqlProgrammeData += $scope.maintiens[d].data[i].none+", ";
-                    sqlProgrammeData += "0, '";
-                    sqlProgrammeData += dateString+"'),";
-                }
-            }
-        }        
-        
-        sqlProgrammeData = converter.setCharAt(sqlProgrammeData, [sqlProgrammeData.length-1], ';');   
-        if(sqlProgrammeData == "INSERT INTO reponses (id_usager, id_comportement, id_situation, debut, reaction, realisation, seul, guide, none, appr, datestring) VALUE;")
-            sqlProgrammeData = "-1";
-
-        return sqlProgrammeData;
+        return -1;
     }
 
     function transfererTasks()

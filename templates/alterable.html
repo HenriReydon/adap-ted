@@ -51,27 +51,48 @@
             </button> -->
 		</div>
         
-        <button class="button button-block" ng-show="minuteurs[0].exist" style="{{minuteurs[0].style}}" disabled>
+        <button class="button button-block" ng-show="minuters[0].exist" style="{{minuters[0].style}}" disabled>
             <span class="spancpt">00</span>
-            <span class="buttonlegend">{{minuteurs[0].behavior.name}}</span>
+            <span class="buttonlegend">{{minuters[0].behavior.name}}</span>
             <span class="spantimer">00:00:00</span>
         </button>
-        <button class="button button-block" ng-show="minuteurs[1].exist" style="{{minuteurs[1].style}}" disabled>
+        <button class="button button-block" ng-show="minuters[1].exist" style="{{minuters[1].style}}" disabled>
             <span class="spancpt">00</span>
-            <span class="buttonlegend">{{minuteurs[1].behavior.name}}</span>
+            <span class="buttonlegend">{{minuters[1].behavior.name}}</span>
             <span class="spantimer">00:00:00</span>
         </button>
-        <button class="button button-block" ng-show="minuteurs[2].exist" style="{{minuteurs[2].style}}" disabled>
+        <button class="button button-block" ng-show="minuters[2].exist" style="{{minuters[2].style}}" disabled>
             <span class="spancpt">00</span>
-            <span class="buttonlegend">{{minuteurs[2].behavior.name}}</span>
+            <span class="buttonlegend">{{minuters[2].behavior.name}}</span>
             <span class="spantimer">00:00:00</span>
         </button>
-        <button class="button button-block" ng-show="minuteurs[3].exist" style="{{minuteurs[3].style}}" disabled>
+        <button class="button button-block" ng-show="minuters[3].exist" style="{{minuters[3].style}}" disabled>
             <span class="spancpt">00</span>
-            <span class="buttonlegend">{{minuteurs[3].behavior.name}}</span>
+            <span class="buttonlegend">{{minuters[3].behavior.name}}</span>
             <span class="spantimer">00:00:00</span>
         </button>
-        <button class="button button-block" ng-click="addMinuteur()"  ng-show="minuteurs[4].exist">
+        <button class="button button-block" ng-click="addMinuteur()"  ng-show="minuters[4].exist">
+            <i class="ion-plus-round" style="margin:0 auto;font-size:36px;"></i>
+        </button>
+
+        <div class="item item-divider">
+            <h2>{{texts.h_programms}}</h2>
+<!--             <button class="button alterable-help button-outline button-calm" ng-click="helpMinuteur()">
+                <i class="ion-help" style="margin:0 auto;"></i>
+            </button> -->
+        </div>
+        
+        <button class="button button-block" ng-show="programms[0].exist" style="{{programms[0].style}}" disabled>
+            <span class="spancpt">00</span>
+            <span class="buttonlegend">{{programms[0].behavior.name}}</span>
+            <span class="spantimer">00:00:00</span>
+        </button>
+        <button class="button button-block" ng-show="programms[1].exist" style="{{programms[1].style}}" disabled>
+            <span class="spancpt">00</span>
+            <span class="buttonlegend">{{programms[1].behavior.name}}</span>
+            <span class="spantimer">00:00:00</span>
+        </button>
+        <button class="button button-block" ng-click="addProgramm()"  ng-show="programms[4].exist">
             <i class="ion-plus-round" style="margin:0 auto;font-size:36px;"></i>
         </button>
     </div>

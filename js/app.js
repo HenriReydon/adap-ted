@@ -18,17 +18,14 @@ app.config(function($stateProvider, $urlRouterProvider)
       controller: "homeCtrl"
     })   
     .state('whatisthis', {
-      url: "/whatisthis",
       templateUrl: "templates/whatisthis.html",
       controller: "homeCtrl"
     })
     .state('history', {
-      url: "/history",
       templateUrl: "templates/history.html",
       controller: "historyCtrl"
     })
     .state('tabs', {
-      url: "/tabs",
       abstract: true,
       templateUrl: "templates/tabs.html",
       controller: "tabsCtrl"
@@ -43,15 +40,16 @@ app.config(function($stateProvider, $urlRouterProvider)
       }
     })
     .state('alterable', {
-      url: "/alterable",
       templateUrl: "templates/alterable.html",
       controller: "alterableCtrl"
     })  
     .state('tasks', {
-      url: "/tasks",
       templateUrl: "templates/tasks.html",
       controller: "tasksCtrl"
     })  
+    .state('debug', {
+      templateUrl: "templates/debug.html"
+    })
   $urlRouterProvider.otherwise("/");
 
 });

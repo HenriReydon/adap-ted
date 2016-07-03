@@ -1,133 +1,130 @@
 <ion-side-menus>
-  <!-- Left menu -->
-  <ion-side-menu side="left">
+	<!-- Left menu -->
+	<ion-side-menu side="left">
+		<div class="item item-divider" style="margin-top:42px;">
+			<h2>{{texts.h_learning}}</h2>
+			<!--         <button class="button alterable-help button-outline button-calm" ng-click="helpOccurence()">
+			<i class="ion-help" style="margin:0 auto;"></i>
+			</button> -->
+		</div>
+		<div class="list card">
+			<div class="item">
+				<span class="spantimer">
+				{{zeroInit(apprentissages[parameters.indexApp].minR)}}:{{zeroInit(apprentissages[parameters.indexApp].secR)}}<!-- :{{zeroInit(apprentissages[parameters.indexApp].msecR)}} -->
+				</span>
+				<h2>{{apprentissages[parameters.indexApp].infos.data.cat}}</h2>
+				<p>{{apprentissages[parameters.indexApp].infos.data.name}}</p>
+			</div>
+			<div class="item item-body">
+				<p style='height:{{parameters.heightPgm}}px;overflow:auto;'>{{apprentissages[parameters.indexApp].infos.data.desc}}</p>
+				<p class="pinfopgm">
+					<span class="spaninfopgm">
+					{{apprentissages[parameters.indexApp].nbS}} {{texts.h_learn_alone}}, 
+					{{apprentissages[parameters.indexApp].nbG}} {{texts.h_learn_guided}},
+					{{apprentissages[parameters.indexApp].nbN}} NR
+					</span><br>
+					<span class="spaninfopgm">
+					{{texts.h_reaction_avg}} {{apprentissages[parameters.indexApp].avgD}} sec.
+					</span><br>
+					<span class="spaninfopgm">
+					{{texts.h_realisation_avg}} {{apprentissages[parameters.indexApp].avgR}} sec.
+					</span><br>
+				</p>
+			</div>
+			<button class="button button-full  button-royal" ng-click="askLearning(1)" ng-disabled="parameters.disabledAskLearning">
+			{{texts.b_ask_setpoint}}
+			</button>      
+			<button class="button button-full  button-energized" ng-click="askLearning(2)" ng-disabled="parameters.disabledTimeDelayLearning">
+				<span style="float:left;">
+				{{texts.b_ask_waiting}}
+				</span>
+				<span class="spantimer">
+				{{zeroInit(apprentissages[parameters.indexApp].minD)}}:{{zeroInit(apprentissages[parameters.indexApp].secD)}}<!-- :{{zeroInit(apprentissages[parameters.indexApp].msecD)}} -->
+				</span>
+			</button>     
+			<div class="button-bar">
+				<button class="button button-positive" style="padding: 3px 0;" ng-click="respLearning(1, 0, 0)" ng-disabled="parameters.disabledRespLearning">
+				{{texts.b_learn_alone}}
+				</button>
+				<button class="button button-balanced" style="padding: 3px 0;" ng-click="respLearning(0, 1, 0)" ng-disabled="parameters.disabledRespLearning">
+				{{texts.b_learn_guided}}
+				</button>
+				<button class="button button-assertive" style="padding: 3px 0;" ng-click="respLearning(0, 0, 1)" ng-disabled="parameters.disabledRespLearning">
+				NR
+				</button>
+			</div>
+		</div>
+	</ion-side-menu>
 
-    <div class="item item-divider" style="margin-top:42px;">
-        <h2>{{texts.h_learning}}</h2>
-<!--         <button class="button alterable-help button-outline button-calm" ng-click="helpOccurence()">
-            <i class="ion-help" style="margin:0 auto;"></i>
-        </button> -->
-    </div>
+	<ion-side-menu-content>
 
-    <div class="list card">
-      <div class="item">
-        <span class="spantimer">
-            {{zeroInit(apprentissages[parameters.indexApp].minR)}}:{{zeroInit(apprentissages[parameters.indexApp].secR)}}<!-- :{{zeroInit(apprentissages[parameters.indexApp].msecR)}} -->
-        </span>
-        <h2>{{apprentissages[parameters.indexApp].infos.data.cat}}</h2>
-        <p>{{apprentissages[parameters.indexApp].infos.data.name}}</p>
-      </div>
-      <div class="item item-body">
-        <p style='height:{{parameters.heightPgm}}px;overflow:auto;'>{{apprentissages[parameters.indexApp].infos.data.desc}}</p>
-        <p class="pinfopgm">
-          <span class="spaninfopgm">
-            {{apprentissages[parameters.indexApp].nbS}} {{texts.h_learn_alone}}, 
-            {{apprentissages[parameters.indexApp].nbG}} {{texts.h_learn_guided}},
-            {{apprentissages[parameters.indexApp].nbN}} NR
-          </span><br>
-          <span class="spaninfopgm">
-            {{texts.h_reaction_avg}} {{apprentissages[parameters.indexApp].avgD}} sec.
-          </span><br>
-          <span class="spaninfopgm">
-            {{texts.h_realisation_avg}} {{apprentissages[parameters.indexApp].avgR}} sec.
-          </span><br>
-        </p>
-      </div>
-        <button class="button button-full  button-royal" ng-click="askLearning(1)" ng-disabled="parameters.disabledAskLearning">
-          {{texts.b_ask_setpoint}}
-        </button>      
-        <button class="button button-full  button-energized" ng-click="askLearning(2)" ng-disabled="parameters.disabledTimeDelayLearning">
-          <span style="float:left;">{{texts.b_ask_waiting}}</span>
-          <span class="spantimer">
-            {{zeroInit(apprentissages[parameters.indexApp].minD)}}:{{zeroInit(apprentissages[parameters.indexApp].secD)}}<!-- :{{zeroInit(apprentissages[parameters.indexApp].msecD)}} -->
-          </span>
-        </button>     
-        <div class="button-bar">
-          <button class="button button-positive" style="padding: 3px 0;" ng-click="respLearning(1, 0, 0)" ng-disabled="parameters.disabledRespLearning">
-            {{texts.b_learn_alone}}
-          </button>
-          <button class="button button-balanced" style="padding: 3px 0;" ng-click="respLearning(0, 1, 0)" ng-disabled="parameters.disabledRespLearning">
-            {{texts.b_learn_guided}}
-          </button>
-          <button class="button button-assertive" style="padding: 3px 0;" ng-click="respLearning(0, 0, 1)" ng-disabled="parameters.disabledRespLearning">
-            NR
-          </button>
-      </div>
-    </div>
+		<ion-nav-bar class="bar-dark">
+			<ion-nav-buttons side="left">
+				<button  class="top button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+			</ion-nav-buttons>
 
-  </ion-side-menu>
+			<ion-nav-buttons side="right">
+				<button class="top button button-icon button-clear ion-navicon" menu-toggle="right"></button>
+			</ion-nav-buttons>
+		</ion-nav-bar>
 
-  <ion-side-menu-content>
+		<ion-nav-view name="content"></ion-nav-view>
 
-    <ion-nav-bar class="bar-dark">
-      <ion-nav-buttons side="left">
-        <button  class="top button button-icon button-clear ion-navicon" menu-toggle="left"></button>
-      </ion-nav-buttons>
+	</ion-side-menu-content>
 
-      <ion-nav-buttons side="right">
-        <button class="top button button-icon button-clear ion-navicon" menu-toggle="right"></button>
-      </ion-nav-buttons>
+	<!-- Right menu -->
+	<ion-side-menu side="right">
+		<div class="item item-divider" style="margin-top:42px;">
+			<h2>{{texts.h_learned}}</h2>
+			<!--         <button class="button alterable-help button-outline button-calm" ng-click="helpOccurence()">
+			<i class="ion-help" style="margin:0 auto;"></i>
+			</button> -->
+		</div>
 
-    </ion-nav-bar>
-
-    <ion-nav-view name="content"></ion-nav-view>
-
-  </ion-side-menu-content>
-
-  <!-- Right menu -->
-  <ion-side-menu side="right">
-  <div class="item item-divider" style="margin-top:42px;">
-        <h2>{{texts.h_learned}}</h2>
-<!--         <button class="button alterable-help button-outline button-calm" ng-click="helpOccurence()">
-            <i class="ion-help" style="margin:0 auto;"></i>
-        </button> -->
-    </div>
-
-    <div class="list card">
-      <div class="item">
-        <span class="spantimer">
-            {{zeroInit(maintiens[parameters.indexMai].minR)}}:{{zeroInit(maintiens[parameters.indexMai].secR)}}<!-- :{{zeroInit(maintiens[parameters.indexMai].msecR)}} -->
-        </span>
-        <h2>{{maintiens[parameters.indexMai].infos.data.cat}}</h2>
-        <p>{{maintiens[parameters.indexMai].infos.data.name}}</p>
-      </div>
-      <div class="item item-body">
-        <p style='height:{{parameters.heightPgm}}px;overflow:auto;'>{{maintiens[parameters.indexMai].infos.data.desc}}</p>
-        <p class="pinfopgm">
-          <span class="spaninfopgm">
-            {{maintiens[parameters.indexMai].nbS}} {{texts.h_learn_alone}}, 
-            {{maintiens[parameters.indexMai].nbG}} {{texts.h_learn_guided}},
-            {{maintiens[parameters.indexMai].nbN}} NR
-          </span><br>
-          <span class="spaninfopgm">
-            {{texts.h_reaction_avg}} {{maintiens[parameters.indexMai].avgD}} sec.
-          </span><br>
-          <span class="spaninfopgm">
-            {{texts.h_realisation_avg}} {{maintiens[parameters.indexMai].avgR}} sec.
-          </span><br>
-        </p>
-      </div>
-        <button class="button button-full  button-royal" ng-click="askLearned(1)" ng-disabled="parameters.disabledAskLearned">
-          {{texts.b_ask_setpoint}}
-        </button>      
-        <button class="button button-full  button-energized" ng-click="askLearned(2)" ng-disabled="parameters.disabledTimeDelayLearned">
-          <span style="float:left;">{{texts.b_ask_waiting}}</span>
-          <span class="spantimer">
-            {{zeroInit(maintiens[parameters.indexMai].minD)}}:{{zeroInit(maintiens[parameters.indexMai].secD)}}<!-- :{{zeroInit(maintiens[parameters.indexMai].msecD)}} -->
-          </span>
-        </button>     
-        <div class="button-bar">
-          <button class="button button-positive" style="padding: 3px 0;" ng-click="respLearned(1, 0, 0)" ng-disabled="parameters.disabledRespLearned">
-            {{texts.b_learn_alone}}
-          </button>
-          <button class="button button-balanced" style="padding: 3px 0;" ng-click="respLearned(0, 1, 0)" ng-disabled="parameters.disabledRespLearned">
-            {{texts.b_learn_guided}}
-          </button>
-          <button class="button button-assertive" style="padding: 3px 0;" ng-click="respLearned(0, 0, 1)" ng-disabled="parameters.disabledRespLearned">
-            NR
-          </button>
-      </div>
-    </div>
-
-  </ion-side-menu>
+		<div class="list card">
+			<div class="item">
+				<span class="spantimer">
+				{{zeroInit(maintiens[parameters.indexMai].minR)}}:{{zeroInit(maintiens[parameters.indexMai].secR)}}<!-- :{{zeroInit(maintiens[parameters.indexMai].msecR)}} -->
+				</span>
+				<h2>{{maintiens[parameters.indexMai].infos.data.cat}}</h2>
+				<p>{{maintiens[parameters.indexMai].infos.data.name}}</p>
+			</div>
+			<div class="item item-body">
+				<p style='height:{{parameters.heightPgm}}px;overflow:auto;'>{{maintiens[parameters.indexMai].infos.data.desc}}</p>
+				<p class="pinfopgm">
+					<span class="spaninfopgm">
+					{{maintiens[parameters.indexMai].nbS}} {{texts.h_learn_alone}}, 
+					{{maintiens[parameters.indexMai].nbG}} {{texts.h_learn_guided}},
+					{{maintiens[parameters.indexMai].nbN}} NR
+					</span><br>
+					<span class="spaninfopgm">
+					{{texts.h_reaction_avg}} {{maintiens[parameters.indexMai].avgD}} sec.
+					</span><br>
+					<span class="spaninfopgm">
+					{{texts.h_realisation_avg}} {{maintiens[parameters.indexMai].avgR}} sec.
+					</span><br>
+				</p>
+			</div>
+			<button class="button button-full  button-royal" ng-click="askLearned(1)" ng-disabled="parameters.disabledAskLearned">
+			{{texts.b_ask_setpoint}}
+			</button>      
+			<button class="button button-full  button-energized" ng-click="askLearned(2)" ng-disabled="parameters.disabledTimeDelayLearned">
+				<span style="float:left;">{{texts.b_ask_waiting}}</span>
+				<span class="spantimer">
+				{{zeroInit(maintiens[parameters.indexMai].minD)}}:{{zeroInit(maintiens[parameters.indexMai].secD)}}<!-- :{{zeroInit(maintiens[parameters.indexMai].msecD)}} -->
+				</span>
+			</button>     
+			<div class="button-bar">
+				<button class="button button-positive" style="padding: 3px 0;" ng-click="respLearned(1, 0, 0)" ng-disabled="parameters.disabledRespLearned">
+				{{texts.b_learn_alone}}
+				</button>
+				<button class="button button-balanced" style="padding: 3px 0;" ng-click="respLearned(0, 1, 0)" ng-disabled="parameters.disabledRespLearned">
+				{{texts.b_learn_guided}}
+				</button>
+				<button class="button button-assertive" style="padding: 3px 0;" ng-click="respLearned(0, 0, 1)" ng-disabled="parameters.disabledRespLearned">
+				NR
+				</button>
+			</div>
+		</div>
+	</ion-side-menu>
 </ion-side-menus>

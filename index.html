@@ -25,13 +25,14 @@
         <script src="js/directives/compile.js"></script>
     <!--Services-->
         <script src="js/services/behaviors.js"></script>
-        <script src="js/services/bulles.js"></script>
+        <script src="js/services/popups.js"></script>
         <script src="js/services/colors.js"></script>
         <script src="js/services/converter.js"></script>
         <script src="js/services/interfaces.js"></script>
         <script src="js/services/programmes.js"></script>
         <script src="js/services/randomize.js"></script>
         <script src="js/services/tasks.js"></script>
+        <!--script src="js/services/filemanager.js"></script-->
     <!--Filters-->
     <!--script src="js/filters/reverse.js"></script--> 
     <!--Modules-->
@@ -45,6 +46,9 @@
                 </button>
                 <button ng-show="header_home" class="button" ng-click="setLangage('english')" style="border:0px;padding: 0 5px;">
                     <img src="img/english.png" width="24px" height="24px">
+                </button>
+                <button ng-show="header_alterable" class="button" ui-sref="debug" style="border:0px;padding: 0 5px;">
+                    <i class="icon ion-hammer"></i>
                 </button>
                 </button>
             </ion-nav-buttons>
