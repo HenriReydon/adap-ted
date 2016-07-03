@@ -1,4 +1,4 @@
-app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, bulles, $rootScope, converter, randomize)
+app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $rootScope, converter, randomize)
 {
 
 	$scope.askLearning = function(etape)
@@ -14,8 +14,8 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, bulles, $root
 	    		},100);
 	    	}				    	
 			$scope.parameters.disabledAskLearning= true;	
-			$scope.parameters.disabledTimeDelayLearning= false;	
-			$scope.parameters.disabledRespLearning= true;	    	
+			$scope.parameters.disabledTimeDelayLearning= false;
+			$scope.parameters.disabledRespLearning= true;
 		} 
 		else 
 		{

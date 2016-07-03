@@ -86,8 +86,8 @@ app.controller('historyCtrl', function($scope, $ionicPopup, $timeout, colors, $s
 
         for(var d in data.min)
         {
-            $scope.minuteurs.push({"min":0, "sec":00, "msec":0, "occurrences":0, 'timer': undefined, "mode": true, 'style': 'border-color: '+colors.palette_min(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(d), "exist": true, "data": []});
-            $scope.minuteurs[$scope.minuteurs.length-1].comportement = data.min[d];
+            $scope.minuters.push({"min":0, "sec":00, "msec":0, "occurrences":0, 'timer': undefined, "mode": true, 'style': 'border-color: '+colors.palette_min(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(d), "exist": true, "data": []});
+            $scope.minuters[$scope.minuters.length-1].comportement = data.min[d];
         }
         for(var d in data.kid)
         {

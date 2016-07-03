@@ -11,8 +11,6 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
     function initHome()
     {
         //Header buttons
-        $scope.codeInterface = {text: ''};
-        $scope.tmpTask = [];
         $scope.parameters = 
         {
             'displayUL': false,
@@ -41,7 +39,7 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
             'heightPgm' : Math.round(window.innerHeight*40/100)
         };
 
-        $scope.french = 
+        var french = 
         {
             "previous": "Précédent",
             "next" : "Suivant",
@@ -83,7 +81,7 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
             "m_no_network" : '"Internet non connecté."',        
             "m_bulle_add_behavior": "Associer un comportement à ce bouton."
         };
-        $scope.english = 
+        var english = 
         {
             "previous": "Previous",
             "next": "Next",
@@ -125,12 +123,12 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
             "m_no_network" : '"Internet not connected."',         
             "m_bulle_add_behavior": "Associate a behavior to this button."
         };       
-        $scope.texts = $scope.english;
+        $scope.texts = english;
         clearData();
 
         $scope.setLangage = function(langue)
         {
-            $scope.texts = eval("$scope."+langue);
+            $scope.texts = eval(langue);
         }
 
         $scope.openLeft = function()
@@ -141,56 +139,60 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
         $scope.openRight = function()
         {
             $rootScope.$broadcast('openRight');
-        }     
-        $scope.goToTasks = function()
-        {
-            $state.go("tasks");
-        }        
+        }
+
     }
 
     function clearData()
     {
-            $scope.occurences = [];
-            $scope.minuteurs = [];
-            $scope.maintiens = [];
-            $scope.apprentissages = [];
-            $scope.tasks = [];
+        $scope.occurences = [];
+        $scope.minuters = [];
+        $scope.maintiens = [];
+        $scope.apprentissages = [];
+        $scope.tasks = [];
 
-            $scope.preparation = {};
-            $scope.preparation.sit = [];
-            $scope.preparation.kids = [];
-
-            $scope.behavior = {};
-    }
-
-    function initPrepare()
-    {
-        $scope.preparation.team_code = "";
-        $scope.parameters.ispaddisabled = false;
-        $scope.parameters.showSelectKids = false;
-        $scope.preparation.halfpads1 = [];
-        $scope.preparation.halfpads2 = [];
-        $scope.preparation.kids = [];
-        $scope.preparation.team = {};
-
-        var pads = [];
-        for(var i=0; i<=9; i++)
-        {
-            pads.push({num:i});
-        }
-        randomize.exe(pads);
-
-        $scope.preparation.halfpads1 = pads.slice(0,5);
-        $scope.preparation.halfpads2 = pads.slice(5,10);
+        $scope.behaviors = {};
     }
 
     function initAlterable()
     {
         $scope.occurences = [];
-        $scope.minuteurs = [];
+        $scope.minuters = [];
         $scope.maintiens = [];
         $scope.apprentissages = [];
+        $scope.fileSystem = {};
+
+        var listener = $scope.$on('cpts_received', function(event, data)
+        {
+            $scope.behaviors.occurences = data.occ;
+            $scope.behaviors.minuters = data.min;
+            $scope.behaviors.maintiens = data.mai;
+            $scope.behaviors.apprentissages = data.app;
+            listener();
+            initAlterableButtons();
+        });
+
         behaviors.exe();
+
+    }
+
+    function initAlterableButtons()
+    {
+        for(var i=0; i<=7; i++)
+        {
+            if(i==6)
+                $scope.occurences.push({"mode":false, "exist": true});//false mean + button
+            else
+                $scope.occurences.push({"tick":0, "mode": true, "exist": false, 'style': 'border-color: '+colors.palette_occ(i)+"; color:#fddbc7 !important; background-color:"+colors.palette_occ(i), "data": []});//false mean + button
+        }
+
+        for(var i=0; i<=4; i++)
+        {
+            if(i==4)
+                $scope.minuters.push({"mode":false, "exist": true});//false mean + button
+            else
+                $scope.minuters.push({"hourTmp":"", "min":00, "sec":00, "msec":0, "occurrences":0, 'timer': undefined, "mode": true, "exist": false, 'style': 'border-color: '+colors.palette_min(i)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(i), "data": []});//false mean + button
+        }
     }
 
     function initHistory()
@@ -206,9 +208,9 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
     {
         return converter.zeroInit(dat);
     } 
+
     $scope.$on('programm_received', function(event, programm)
     {
-
         for(var d in programm.app)
         {
         /************************ ATTENTION ********************************

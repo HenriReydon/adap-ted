@@ -1,11 +1,11 @@
-<ion-content on-swipe-left="swipeLeft()" on-swipe-right="swipeRight()">
+<ion-content scroll="false" on-swipe-left="swipeLeft()" on-swipe-right="swipeRight()">
     <div class="item item-divider" style="margin-top:42px;">
         <h2>{{texts.h_history}}</h2>
         <button class="button alterable-help button-outline button-calm" ng-click="helpHistory()">
             <i class="ion-help" style="margin:0 auto;"></i>
         </button>
     </div>
-    <div id="perspec">
+    <div class="card" id="perspec">
 		<div ng-repeat="int in history.interfaces" interface race="{{int.race}}" style="{{int.style}};{{int.style2}};{{int.style3}}"></div>
     </div>
     <button class="button bouton-outline button-energized" style="position: absolute;right:50px;top: 500px;" ng-click="openHisto()">Ouvrir</button>

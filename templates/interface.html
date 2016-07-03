@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content scroll="false">
     <div class="list">
         <div class="item item-divider" style="margin-top:42px;">
             <h2>{{texts.h_occurences}}</h2>
@@ -49,25 +49,25 @@
             </button> -->
         </div>
         <div>
-        <button class="button button-block" ng-click="actionMinuteur(0)" ng-show="minuteurs[0].exist" style="{{minuteurs[0].style}}">
-            <span class="spancpt">{{zeroInit(minuteurs[0].occurrences)}}</span>
-            <span class="buttonlegend" style="font-size:95% !important;">{{minuteurs[0].behavior.name}}</span>
-            <span class="spantimer">{{zeroInit(minuteurs[0].min)}}:{{zeroInit(minuteurs[0].sec)}}<!-- :{{zeroInit(minuteurs[0].msec)}} --></span>
+        <button class="button button-block" ng-click="actionMinuteur(0)" ng-show="minuters[0].exist" style="{{minuters[0].style}}">
+            <span class="spancpt">{{zeroInit(minuters[0].occurrences)}}</span>
+            <span class="buttonlegend" style="font-size:95% !important;">{{minuters[0].behavior.name}}</span>
+            <span class="spantimer">{{zeroInit(minuters[0].min)}}:{{zeroInit(minuters[0].sec)}}<!-- :{{zeroInit(minuters[0].msec)}} --></span>
         </button>
-        <button class="button button-block" ng-click="actionMinuteur(1)" ng-show="minuteurs[1].exist" style="{{minuteurs[1].style}}">
-            <span class="spancpt">{{zeroInit(minuteurs[1].occurrences)}}</span>
-            <span class="buttonlegend" style="font-size:95% !important;">{{minuteurs[1].behavior.name}}</span>
-            <span class="spantimer">{{zeroInit(minuteurs[1].min)}}:{{zeroInit(minuteurs[1].sec)}}<!-- :{{zeroInit(minuteurs[1].msec)}} --></span>
+        <button class="button button-block" ng-click="actionMinuteur(1)" ng-show="minuters[1].exist" style="{{minuters[1].style}}">
+            <span class="spancpt">{{zeroInit(minuters[1].occurrences)}}</span>
+            <span class="buttonlegend" style="font-size:95% !important;">{{minuters[1].behavior.name}}</span>
+            <span class="spantimer">{{zeroInit(minuters[1].min)}}:{{zeroInit(minuters[1].sec)}}<!-- :{{zeroInit(minuters[1].msec)}} --></span>
         </button>
-        <button class="button button-block" ng-click="actionMinuteur(2)" ng-show="minuteurs[2].exist" style="{{minuteurs[2].style}}">
-            <span class="spancpt">{{zeroInit(minuteurs[2].occurrences)}}</span>
-            <span class="buttonlegend" style="font-size:95% !important;">{{minuteurs[2].behavior.name}}</span>
-            <span class="spantimer">{{zeroInit(minuteurs[2].min)}}:{{zeroInit(minuteurs[2].sec)}}<!-- :{{zeroInit(minuteurs[2].msec)}} --></span>
+        <button class="button button-block" ng-click="actionMinuteur(2)" ng-show="minuters[2].exist" style="{{minuters[2].style}}">
+            <span class="spancpt">{{zeroInit(minuters[2].occurrences)}}</span>
+            <span class="buttonlegend" style="font-size:95% !important;">{{minuters[2].behavior.name}}</span>
+            <span class="spantimer">{{zeroInit(minuters[2].min)}}:{{zeroInit(minuters[2].sec)}}<!-- :{{zeroInit(minuters[2].msec)}} --></span>
         </button>
-        <button class="button button-block" ng-click="actionMinuteur(3)" ng-show="minuteurs[3].exist" style="{{minuteurs[3].style}}">
-            <span class="spancpt">{{zeroInit(minuteurs[3].occurrences)}}</span>
-            <span class="buttonlegend" style="font-size:95% !important;">{{minuteurs[3].behavior.name}}</span>
-            <span class="spantimer">{{zeroInit(minuteurs[3].min)}}:{{zeroInit(minuteurs[3].sec)}}<!-- :{{zeroInit(minuteurs[3].msec)}} --></span>
+        <button class="button button-block" ng-click="actionMinuteur(3)" ng-show="minuters[3].exist" style="{{minuters[3].style}}">
+            <span class="spancpt">{{zeroInit(minuters[3].occurrences)}}</span>
+            <span class="buttonlegend" style="font-size:95% !important;">{{minuters[3].behavior.name}}</span>
+            <span class="spantimer">{{zeroInit(minuters[3].min)}}:{{zeroInit(minuters[3].sec)}}<!-- :{{zeroInit(minuters[3].msec)}} --></span>
         </button>
     </div>
     </div>
