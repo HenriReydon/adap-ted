@@ -29,7 +29,7 @@ app.factory('interfaces', function($http, $rootScope)
 				var tab_occ = [];
 				var tab_min = [];
 
-				//On récupère les comportements envahissants (occurences et minuteurs)
+				//On récupère les comportements envahissants (occurences et timers)
 				for(var d in data['occ'])
 					tab_occ.push({"id":d, "name":data['occ'][d]})
 

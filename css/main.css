@@ -311,3 +311,65 @@ label
     box-shadow: 0px 0px 10px 0px #e42112;
     filter:progid:DXImageTransform.Microsoft.Shadow(color=#e42112, Direction=NaN, Strength=20);
 }
+
+.tabs-task .item h2
+{
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.tabs-task .item .ion-arrow-left-c
+{
+    float: left;
+    font-size: 2em;
+}
+
+.tabs-task .item .ion-arrow-right-c
+{
+    float: right;
+    font-size: 2em;
+}
+
+button.timer .spantimer
+{
+    -webkit-transition: all 0.275s linear;
+    -o-transition: all 0.275s linear;
+    -moz-transition: all 0.275s linear;
+    -ms-transition: all 0.275s linear;
+    -kthtml-transition: all 0.275s linear;
+    transition: all 0.275s linear;
+}
+
+button.timer .spantimer.border-top
+{
+    -webkit-box-shadow:  0px 2px 8px 0px rgba(238, 221, 238, 0.56);
+    -moz-box-shadow:  0px 2px 6px 0px rgba(238, 221, 238, 0.56);
+    box-shadow:  0px 2px 6px 0px rgba(238, 221, 238, 0.56);
+}
+
+button.timer .spantimer.border-right
+{
+    -webkit-box-shadow:  -2px 0px 6px 0px rgba(238, 221, 238, 0.56);
+    -moz-box-shadow:  -2px 0px 6px 0px rgba(238, 221, 238, 0.56);
+    box-shadow:  -2px 0px 6px 0px rgba(238, 221, 238, 0.56);
+}
+
+button.timer .spantimer.border-bottom
+{
+    -webkit-box-shadow:  0px -2px 6px 0px rgba(238, 221, 238, 0.56);
+    -moz-box-shadow:  0px -2px 6px 0px rgba(238, 221, 238, 0.56);
+    box-shadow:  0px -2px 6px 0px rgba(238, 221, 238, 0.56);
+}
+
+button.timer .spantimer.border-left
+{
+    -webkit-box-shadow:  2px 0px 6px 0px rgba(238, 221, 238, 0.56);
+    -moz-box-shadow:  2px 0px 6px 0px rgba(238, 221, 238, 0.56);
+    box-shadow:  2px 0px 6px 0px rgba(238, 221, 238, 0.56);
+}
+
+italic
+{
+    font-style: italic;
+    font-size: 0.6em;
+}

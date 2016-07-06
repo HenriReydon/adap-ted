@@ -16,12 +16,12 @@ app.controller('homeCtrl', function($scope, $ionicPopup, $timeout, interfaces,
     {
         if(data == 1) 
         {
-            $scope.parameters.disabledRefButton = false;
+            $scope.parameters.disabled_ref_button = false;
             $scope.parameters.classCode = "valid";
         } 
         else 
         {
-            $scope.parameters.disabledRefButton = true;
+            $scope.parameters.disabled_ref_button = true;
             $scope.parameters.classCode = "wrong";
         }
     });

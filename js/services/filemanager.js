@@ -1,4 +1,4 @@
-app.factory('filemanager', function($http, $rootScope, cordovaFile)
+app.factory('filemanager', function($http, $rootScope, $cordovaFile)
 {
     var reader = {};
 

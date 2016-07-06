@@ -1,48 +1,48 @@
 app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $rootScope, converter, randomize)
 {
 
-	$scope.askLearning = function(etape)
+	$scope.askTask = function(etape)
 	{
 		if(etape == 1)
 		{		
-	    	if($scope.apprentissages[$scope.parameters.indexApp].timerD==undefined)
+	    	if($scope.programs[$scope.parameters.index_pgm].timer_d==undefined)
 	    	{
-	    		$scope.apprentissages[$scope.parameters.indexApp].timerD = $timeout(function()
+	    		$scope.programs[$scope.parameters.index_pgm].timer_d = $timeout(function()
 	    		{
-	        	$scope.apprentissages[$scope.parameters.indexApp].hourTmpD = new Date();
-	    			timerD($scope.apprentissages[$scope.parameters.indexApp]);
+	        	$scope.programs[$scope.parameters.index_pgm].hour_tmp_d = new Date();
+	    			timer_d($scope.programs[$scope.parameters.index_pgm]);
 	    		},100);
 	    	}				    	
-			$scope.parameters.disabledAskLearning= true;	
-			$scope.parameters.disabledTimeDelayLearning= false;
-			$scope.parameters.disabledRespLearning= true;
+			$scope.parameters.disabled_ask_task= true;	
+			$scope.parameters.disabled_time_delay_task= false;
+			$scope.parameters.disabled_resp_task= true;
 		} 
 		else 
 		{
-            $timeout.cancel($scope.apprentissages[$scope.parameters.indexApp].timerD);
-            $scope.delayApprTmp = converter.zeroInit($scope.apprentissages[$scope.parameters.indexApp].minD)+":"+converter.zeroInit($scope.apprentissages[$scope.parameters.indexApp].secD)+":"+$scope.apprentissages[$scope.parameters.indexApp].msecD;
-	    	if($scope.apprentissages[$scope.parameters.indexApp].timerR==undefined)
+            $timeout.cancel($scope.programs[$scope.parameters.index_pgm].timer_d);
+            $scope.delayApprTmp = converter.zeroInit($scope.programs[$scope.parameters.index_pgm].min_d)+":"+converter.zeroInit($scope.programs[$scope.parameters.index_pgm].sec_d)+":"+$scope.programs[$scope.parameters.index_pgm].msec_d;
+	    	if($scope.programs[$scope.parameters.index_pgm].timer_r==undefined)
 	    	{
-	    		$scope.apprentissages[$scope.parameters.indexApp].timerR = $timeout(function()
+	    		$scope.programs[$scope.parameters.index_pgm].timer_r = $timeout(function()
 	    		{
-	    			$scope.apprentissages[$scope.parameters.indexApp].hourTmpR = new Date();
-	    			timerR($scope.apprentissages[$scope.parameters.indexApp]);
+	    			$scope.programs[$scope.parameters.index_pgm].hour_tmp_r = new Date();
+	    			timer_r($scope.programs[$scope.parameters.index_pgm]);
 	    		},100);
 	    	}	
-			$scope.parameters.disabledAskLearning= true;	
-			$scope.parameters.disabledTimeDelayLearning= true;	
-			$scope.parameters.disabledRespLearning= false;	    	            
+			$scope.parameters.disabled_ask_task= true;	
+			$scope.parameters.disabled_time_delay_task= true;	
+			$scope.parameters.disabled_resp_task= false;	    	            
 		}			
 	}
 
-	$scope.respLearning = function(s, g, n)
+	$scope.respTask = function(s, g, n)
 	{
-            $timeout.cancel($scope.apprentissages[$scope.parameters.indexApp].timerR);
-            $scope.realApprTmp = converter.zeroInit($scope.apprentissages[$scope.parameters.indexApp].minR)+":"+converter.zeroInit($scope.apprentissages[$scope.parameters.indexApp].secR)+":"+$scope.apprentissages[$scope.parameters.indexApp].msecR;			
+            $timeout.cancel($scope.programs[$scope.parameters.index_pgm].timer_r);
+            $scope.realApprTmp = converter.zeroInit($scope.programs[$scope.parameters.index_pgm].min_r)+":"+converter.zeroInit($scope.programs[$scope.parameters.index_pgm].sec_r)+":"+$scope.programs[$scope.parameters.index_pgm].msec_r;			
             var dateJour = new Date();
         		var dateString = dateJour.getFullYear() + "-" + (dateJour.getMonth()+1) + "-" + dateJour.getDate();
-            $scope.apprentissages[$scope.parameters.indexApp].data.push({
-           			"debut": $scope.apprentissages[$scope.parameters.indexApp].hourTmpD,
+            $scope.programs[$scope.parameters.index_pgm].data.push({
+           			"debut": $scope.programs[$scope.parameters.index_pgm].hour_tmp_d,
            			"reaction": $scope.delayApprTmp,
            			"realisation": $scope.realApprTmp,
            			"seul": s,
@@ -51,136 +51,104 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
            			"datestring": dateString
 			});
 
-			$scope.parameters.disabledAskLearning= false;	
-			$scope.parameters.disabledTimeDelayLearning= true;	
-			$scope.parameters.disabledRespLearning= true;
-			$scope.apprentissages[$scope.parameters.indexApp].minD = 0;			
-			$scope.apprentissages[$scope.parameters.indexApp].secD = 0;
-			$scope.apprentissages[$scope.parameters.indexApp].msecD = 0;
-			$scope.apprentissages[$scope.parameters.indexApp].timerD = undefined;
-			$scope.apprentissages[$scope.parameters.indexApp].minR = 0;
-			$scope.apprentissages[$scope.parameters.indexApp].secR = 0;
-			$scope.apprentissages[$scope.parameters.indexApp].msecR = 0;
-			$scope.apprentissages[$scope.parameters.indexApp].timerR = undefined;
+			$scope.parameters.disabled_ask_task= false;	
+			$scope.parameters.disabled_time_delay_task= true;	
+			$scope.parameters.disabled_resp_task= true;
+			$scope.programs[$scope.parameters.index_pgm].min_d = 0;			
+			$scope.programs[$scope.parameters.index_pgm].sec_d = 0;
+			$scope.programs[$scope.parameters.index_pgm].msec_d = 0;
+			$scope.programs[$scope.parameters.index_pgm].timer_d = undefined;
+			$scope.programs[$scope.parameters.index_pgm].min_r = 0;
+			$scope.programs[$scope.parameters.index_pgm].sec_r = 0;
+			$scope.programs[$scope.parameters.index_pgm].msec_r = 0;
+			$scope.programs[$scope.parameters.index_pgm].timer_r = undefined;
 
 
-			$scope.apprentissages[$scope.parameters.indexApp].nbS += s;
-			$scope.apprentissages[$scope.parameters.indexApp].nbG += g;
-			$scope.apprentissages[$scope.parameters.indexApp].nbN += n;
-			$scope.apprentissages[$scope.parameters.indexApp].cumulD += converter.getTimerInSeconds($scope.delayApprTmp);
-			$scope.apprentissages[$scope.parameters.indexApp].avgD = Math.round($scope.apprentissages[$scope.parameters.indexApp].cumulD/($scope.apprentissages[$scope.parameters.indexApp].nbS+$scope.apprentissages[$scope.parameters.indexApp].nbG+$scope.apprentissages[$scope.parameters.indexApp].nbN)*100)/100;
-			$scope.apprentissages[$scope.parameters.indexApp].cumulR += converter.getTimerInSeconds($scope.realApprTmp);
-			$scope.apprentissages[$scope.parameters.indexApp].avgR = Math.round($scope.apprentissages[$scope.parameters.indexApp].cumulR/($scope.apprentissages[$scope.parameters.indexApp].nbS+$scope.apprentissages[$scope.parameters.indexApp].nbG+$scope.apprentissages[$scope.parameters.indexApp].nbN)*100)/100;
-			if($scope.parameters.indexApp == ($scope.apprentissages.length-1))
-			{
-				randomize.exe($scope.apprentissages);
-				$scope.parameters.indexApp = 0;
-			} else $scope.parameters.indexApp++;			
+			$scope.programs[$scope.parameters.index_pgm].nb_s += s;
+			$scope.programs[$scope.parameters.index_pgm].nb_g += g;
+			$scope.programs[$scope.parameters.index_pgm].nb_n += n;
+			$scope.programs[$scope.parameters.index_pgm].cumul_d += converter.getTimerInSeconds($scope.delayApprTmp);
+			$scope.programs[$scope.parameters.index_pgm].avg_d = Math.round($scope.programs[$scope.parameters.index_pgm].cumul_d/($scope.programs[$scope.parameters.index_pgm].nb_s+$scope.programs[$scope.parameters.index_pgm].nb_g+$scope.programs[$scope.parameters.index_pgm].nb_n)*100)/100;
+			$scope.programs[$scope.parameters.index_pgm].cumul_r += converter.getTimerInSeconds($scope.realApprTmp);
+			$scope.programs[$scope.parameters.index_pgm].avg_r = Math.round($scope.programs[$scope.parameters.index_pgm].cumul_r/($scope.programs[$scope.parameters.index_pgm].nb_s+$scope.programs[$scope.parameters.index_pgm].nb_g+$scope.programs[$scope.parameters.index_pgm].nb_n)*100)/100;		
 	}
 
-	$scope.askLearned = function(etape)
-	{	
-		if(etape == 1)
-		{		
-	    	if($scope.maintiens[$scope.parameters.indexMai].timerD==undefined)
-	    	{
-	    		$scope.maintiens[$scope.parameters.indexMai].timerD = $timeout(function()
-	    		{
-	          $scope.maintiens[$scope.parameters.indexMai].hourTmpD = new Date();
-	    			timerD($scope.maintiens[$scope.parameters.indexMai]);
-	    		},100);
-	    	}				    	
-			$scope.parameters.disabledAskLearned= true;	
-			$scope.parameters.disabledTimeDelayLearned= false;	
-			$scope.parameters.disabledRespLearned= true;	    	
-		} 
-		else 
+	$scope.existATask = function()
+	{
+		for(var pro in $scope.programs)
 		{
-            $timeout.cancel($scope.maintiens[$scope.parameters.indexMai].timerD);
-            $scope.delayMaiTmp = converter.zeroInit($scope.maintiens[$scope.parameters.indexMai].minD)+":"+converter.zeroInit($scope.maintiens[$scope.parameters.indexApp].secD)+":"+$scope.maintiens[$scope.parameters.indexApp].msecD;
-	    	if($scope.maintiens[$scope.parameters.indexMai].timerR==undefined)
-	    	{
-	    		$scope.maintiens[$scope.parameters.indexMai].timerR = $timeout(function()
-	    		{
-	    			$scope.maintiens[$scope.parameters.indexMai].hourTmpR = new Date();
-	    			timerR($scope.maintiens[$scope.parameters.indexMai]);
-	    		},100);
-	    	}	
-			$scope.parameters.disabledAskLearned= true;	
-			$scope.parameters.disabledTimeDelayLearned= true;	
-			$scope.parameters.disabledRespLearned= false;	    	            
+			if($scope.programs[pro].behavior != undefined)
+				return true;
+		}
+		return false;
+	}
+
+	$scope.existAnothertask = function()
+	{
+		var count = 0;
+		for(var pro in $scope.programs)
+		{
+			if($scope.programs[pro].behavior != undefined)
+				count++;
+		}
+		if(count >=2)
+			return  true;
+		else
+			return false;
+	}
+
+	$scope.previousTask = function()
+	{
+		$scope.parameters.index_pgm--;
+		if($scope.parameters.index_pgm <= -1)
+			$scope.parameters.index_pgm = 2;
+		while($scope.programs[$scope.parameters.index_pgm].behavior==undefined)
+		{
+			$scope.parameters.index_pgm--;
+			if($scope.parameters.index_pgm < 0)
+				$scope.parameters.index_pgm = 2;
 		}		
 	}
 
-	$scope.respLearned = function(s, g, n)
+	$scope.nextTask = function()
 	{
-            $timeout.cancel($scope.maintiens[$scope.parameters.indexMai].timerR);
-            $scope.realMaiTmp = converter.zeroInit($scope.maintiens[$scope.parameters.indexMai].minR)+":"+converter.zeroInit($scope.maintiens[$scope.parameters.indexMai].secR)+":"+$scope.maintiens[$scope.parameters.indexMai].msecR;			
-            var dateJour = new Date();
-        	var dateString = dateJour.getFullYear() + "-" + (dateJour.getMonth()+1) + "-" + dateJour.getDate();
-            $scope.maintiens[$scope.parameters.indexMai].data.push({
-           			"debut": $scope.maintiens[$scope.parameters.indexMai].hourTmpD,
-           			"reaction": $scope.delayMaiTmp,
-           			"realisation": $scope.realMaiTmp,
-           			"seul": s,
-           			"guide": g,
-           			"none": n,
-           			"datestring": dateString
-			});
-
-			$scope.parameters.disabledAskLearned= false;	
-			$scope.parameters.disabledTimeDelayLearned= true;	
-			$scope.parameters.disabledRespLearned= true;
-			$scope.maintiens[$scope.parameters.indexMai].minD = 0;			
-			$scope.maintiens[$scope.parameters.indexMai].secD = 0;
-			$scope.maintiens[$scope.parameters.indexMai].msecD = 0;
-			$scope.maintiens[$scope.parameters.indexMai].timerD = undefined;
-			$scope.maintiens[$scope.parameters.indexMai].minR = 0;
-			$scope.maintiens[$scope.parameters.indexMai].secR = 0;
-			$scope.maintiens[$scope.parameters.indexMai].msecR = 0;
-			$scope.maintiens[$scope.parameters.indexMai].timerR = undefined;
-
-
-			$scope.maintiens[$scope.parameters.indexMai].nbS += s;
-			$scope.maintiens[$scope.parameters.indexMai].nbG += g;
-			$scope.maintiens[$scope.parameters.indexMai].nbN += n;
-			$scope.maintiens[$scope.parameters.indexMai].cumulD += converter.getTimerInSeconds($scope.delayMaiTmp);
-			$scope.maintiens[$scope.parameters.indexMai].avgD = Math.round($scope.maintiens[$scope.parameters.indexMai].cumulD/($scope.maintiens[$scope.parameters.indexMai].nbS+$scope.maintiens[$scope.parameters.indexMai].nbG+$scope.maintiens[$scope.parameters.indexMai].nbN)*100)/100;
-			$scope.maintiens[$scope.parameters.indexMai].cumulR += converter.getTimerInSeconds($scope.realMaiTmp);
-			$scope.maintiens[$scope.parameters.indexMai].avgR = Math.round($scope.maintiens[$scope.parameters.indexMai].cumulR/($scope.maintiens[$scope.parameters.indexMai].nbS+$scope.maintiens[$scope.parameters.indexMai].nbG+$scope.maintiens[$scope.parameters.indexMai].nbN)*100)/100;
-			if($scope.parameters.indexMai == ($scope.maintiens.length-1))
-			{
-				randomize.exe($scope.maintiens);				
-				$scope.parameters.indexMai = 0;
-			} else $scope.parameters.indexMai++;
+		$scope.parameters.index_pgm++;
+		if($scope.parameters.index_pgm > 2)
+			$scope.parameters.index_pgm = 0;
+		while($scope.programs[$scope.parameters.index_pgm].behavior==undefined)
+		{
+			$scope.parameters.index_pgm++;
+			if($scope.parameters.index_pgm > 2)
+				$scope.parameters.index_pgm = 0;
+		}		
 	}
 
-    function timerD(target)
+    function timer_d(target)
     {
 
         var now = new Date();
-        var diff = now.getTime() - target.hourTmpD.getTime();
+        var diff = now.getTime() - target.hour_tmp_d.getTime();
         var diff = new Date(diff);
-        target.timerD = $timeout(function()
+        target.timer_d = $timeout(function()
         {
-            target.minD = diff.getMinutes();
-            target.secD = diff.getSeconds();
-            target.msecD = diff.getMilliseconds();
-            timerD(target);
+            target.min_d = diff.getMinutes();
+            target.sec_d = diff.getSeconds();
+            target.msec_d = diff.getMilliseconds();
+            timer_d(target);
         }, 10);  
     }	
 
-    function timerR(target)
+    function timer_r(target)
     {
         var now = new Date();
-        var diff = now.getTime() - target.hourTmpR.getTime();
+        var diff = now.getTime() - target.hour_tmp_r.getTime();
         var diff = new Date(diff);
-        target.timerR = $timeout(function()
+        target.timer_r = $timeout(function()
         {
-            target.minR = diff.getMinutes();
-            target.secR = diff.getSeconds();
-            target.msecR = diff.getMilliseconds();
-            timerR(target);
+            target.min_r = diff.getMinutes();
+            target.sec_r = diff.getSeconds();
+            target.msec_r = diff.getMilliseconds();
+            timer_r(target);
         }, 10);      	
     }    
 });
