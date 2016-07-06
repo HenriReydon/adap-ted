@@ -75,12 +75,13 @@ app.controller('historyCtrl', function($scope, $ionicPopup, $timeout, colors, $s
     {
         if($scope.history.interfaces[index]!=undefined)
         {
-            $scope.occurences = $scope.history.interfaces[index].interface.occurences;
-            console.log($scope.occurences);
-            $scope.timers = $scope.history.interfaces[index].interface.timers;
-            $scope.programs = $scope.history.interfaces[index].interface.programs;
+            $scope.interface.occurences = $scope.history.interfaces[index].interface.occurences;
+            $scope.interface.timers = $scope.history.interfaces[index].interface.timers;
+            $scope.interface.programs = $scope.history.interfaces[index].interface.programs;
             $state.go("tabs.interface");
         }
+        else
+            console.log('MOFO');
         
     }
 });

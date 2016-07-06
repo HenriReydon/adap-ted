@@ -7,7 +7,7 @@ app.factory('tempsave', function($http, $rootScope)
 		$http({
 		    method: 'POST',
 		    url: 'scripts/write_json.php',
-		    data: {'data': data}
+		    data: {data}
 		});
     };
     return reader;

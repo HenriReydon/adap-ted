@@ -67,6 +67,7 @@ app.factory('popups', function($ionicPopup, $timeout, $rootScope, $state)
 				{
 					$scope.parameters.display_ul = false;
 					$scope.parameters.activate_valid = false;
+					delete $scope.parameters.input_behavior;
 				}
 			},
 				{ 
@@ -80,7 +81,7 @@ app.factory('popups', function($ionicPopup, $timeout, $rootScope, $state)
 					} 
 					else 
 					{
-						$scope.addBehavior($scope.occurences, index, is_max);
+						$scope.addBehavior($scope.interface.occurences, index, is_max);
 					}
 				}
 			}]
@@ -100,6 +101,7 @@ app.factory('popups', function($ionicPopup, $timeout, $rootScope, $state)
 				{
 					$scope.parameters.display_ul = false;
 					$scope.parameters.activate_valid = false;
+					delete $scope.parameters.input_behavior;
 				}
 			},
 				{ 
@@ -113,7 +115,7 @@ app.factory('popups', function($ionicPopup, $timeout, $rootScope, $state)
 					} 
 					else 
 					{
-						$scope.addBehavior($scope.timers, index, is_max, $scope.chosen_bhv);
+						$scope.addBehavior($scope.interface.timers, index, is_max, $scope.chosen_bhv);
 					}
 				}
 			}]
@@ -133,6 +135,7 @@ app.factory('popups', function($ionicPopup, $timeout, $rootScope, $state)
 				{
 					$scope.parameters.display_ul = false;
 					$scope.parameters.activate_valid = false;
+					delete $scope.parameters.input_behavior;
 				}
 			},
 				{ 
@@ -146,7 +149,7 @@ app.factory('popups', function($ionicPopup, $timeout, $rootScope, $state)
 					} 
 					else 
 					{
-						$scope.addBehavior($scope.programs, index, is_max, $scope.chosen_bhv);
+						$scope.addBehavior($scope.interface.programs, index, is_max, $scope.chosen_bhv);
 					}
 				}
 			}]

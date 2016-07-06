@@ -15,20 +15,20 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
 
     $scope.incrementeOccurence = function(index)
     {
-    	$scope.occurences[index].tick+=1;
-        $scope.occurences[index].data.push(converter.getCurrentDate()+"&"+converter.getHour());
-        if($scope.occurences[index].likert.exist)
-            $scope.occurences[index].likert.disabled = false;
+    	$scope.interface.occurences[index].tick+=1;
+        $scope.interface.occurences[index].data.push(converter.getCurrentDate()+"&"+converter.getHour());
+        if($scope.interface.occurences[index].likert.exist)
+            $scope.interface.occurences[index].likert.disabled = false;
     }
 
     $scope.setOccurenceIntensity = function(index_occ, index_int)
     {
-        $scope.occurences[index_occ].likert.disabled = true;
+        $scope.interface.occurences[index_occ].likert.disabled = true;
     }
 
     $scope.setTimerIntensity = function(index_tim, index_int)
     {
-        $scope.timers[index_tim].likert.disabled = true;
+        $scope.interface.timers[index_tim].likert.disabled = true;
     }
 
     $scope.zeroInit = function(dat)
@@ -38,26 +38,26 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
 
     $scope.actionTimer = function(index)
     {
-    	if($scope.timers[index].timer==undefined)
+    	if($scope.interface.timers[index].timer==undefined)
     	{
-    		$scope.timers[index].timer = $timeout(function()
+    		$scope.interface.timers[index].timer = $timeout(function()
     		{
-                $scope.timers[index].hourTmp = new Date();
-    			timer($scope.timers[index], index);
+                $scope.interface.timers[index].hourTmp = new Date();
+    			timer($scope.interface.timers[index], index);
     		},10);
-            if($scope.timers[index].likert.exist)
-                $scope.timers[index].likert.disabled = false;
+            if($scope.interface.timers[index].likert.exist)
+                $scope.interface.timers[index].likert.disabled = false;
     	}
     	else
 		{
-            $scope.timers[index].occurrences++;
-            $timeout.cancel($scope.timers[index].timer);
-            d = $scope.timers[index].min+":"+$scope.timers[index].sec+":"+$scope.timers[index].msec;
-            $scope.timers[index].data.push({"h": $scope.timers[index].hourTmp, "d": d});
-			$scope.timers[index].min = 0; 
-            $scope.timers[index].sec = 0;
-            $scope.timers[index].msec = 0;
-            $scope.timers[index].timer = undefined;
+            $scope.interface.timers[index].occurrences++;
+            $timeout.cancel($scope.interface.timers[index].timer);
+            d = $scope.interface.timers[index].min+":"+$scope.interface.timers[index].sec+":"+$scope.interface.timers[index].msec;
+            $scope.interface.timers[index].data.push({"h": $scope.interface.timers[index].hourTmp, "d": d});
+			$scope.interface.timers[index].min = 0; 
+            $scope.interface.timers[index].sec = 0;
+            $scope.interface.timers[index].msec = 0;
+            $scope.interface.timers[index].timer = undefined;
 
             $('#tim'+index+' .spantimer').removeClass('border-top');
             $('#tim'+index+' .spantimer').removeClass('border-right');
