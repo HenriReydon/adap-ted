@@ -1,6 +1,6 @@
-app.controller('historyCtrl', function($scope, $ionicPopup, $timeout, colors, $state, interfaces)
+app.controller('historyCtrl', function($scope, $ionicPopup, $timeout, colors, $state)
 {
-    var index = 3;
+    var index = $scope.history.interfaces.length-1;
 
     $scope.swipeRight = function()
     {
@@ -24,74 +24,64 @@ app.controller('historyCtrl', function($scope, $ionicPopup, $timeout, colors, $s
             console.log(data.histo[i].int);*/        
     });    
 
+    $scope.$on('build_history', function()
+    {
+        index = $scope.history.interfaces.length-1;
+        buildHistory(index);
+    });
     buildHistory(index);
 
     function buildHistory(current)
     {
-    	for(var i=0; i<=6; i++)
+    	for(var i=0; i<$scope.parameters.history_limit; i++)
 	    {
-	    	if(i<current-1)
-	    	{
-	    		var pos = "left:"+30*i+"px";
-	    		var race = -2;
-	    		var zindex = "z-index:"+i;
-	    	}
-            else if(i==current-1)
+            if($scope.history.interfaces[i]!=undefined)
             {
-                var pos = "left:"+30*i+"px";
-                var race = -1;
-                var zindex = "z-index:"+i;
-            }
-	    	else if(i==current)
-	    	{
-	    		var pos = "left:25%";
-	    		var race = 0;
-	    		var zindex = "z-index:100";
-	    	}
-	    	else if(i==current+1)
-	    	{
-	    		var pos = "right:"+30*(6-i)+"px";
-	    		var race = 1;
-	    		var zindex = "z-index:"+(6-i);
-	    	}
-            else
-            {
-                var pos = "right:"+30*(6-i)+"px";
-                var race = 2;
-                var zindex = "z-index:"+(6-i);
-            }
-	    	if(!$scope.history.builded)
-                $scope.history.interfaces.push({'style': 'position: absolute', 'style2': pos, 'style3': zindex, 'race': race})
-            else
-            {
-                $scope.history.interfaces[i].style2 = pos;
-                $scope.history.interfaces[i].style3 = zindex;
-                $scope.history.interfaces[i].race = race;
+    	    	if(i<current-1)
+    	    	{
+    	    		var pos = "left:"+30*i+"px";
+    	    		var race = -2;
+    	    		var zindex = "z-index:"+i;
+    	    	}
+                else if(i==current-1)
+                {
+                    var pos = "left:"+30*i+"px";
+                    var race = -1;
+                    var zindex = "z-index:"+i;
+                }
+    	    	else if(i==current)
+    	    	{
+    	    		var pos = "left:25%";
+    	    		var race = 0;
+    	    		var zindex = "z-index:100";
+    	    	}
+    	    	else if(i==current+1)
+    	    	{
+    	    		var pos = "right:"+30*(6-i)+"px";
+    	    		var race = 1;
+    	    		var zindex = "z-index:"+(6-i);
+    	    	}
+                else
+                {
+                    var pos = "right:"+30*(6-i)+"px";
+                    var race = 2;
+                    var zindex = "z-index:"+(6-i);
+                }
+                $scope.history.interfaces[i].style={'style': 'position: absolute', 'style2': pos, 'style3': zindex, 'race': race};
             }
 	    }
-        $scope.history.builded = true;
     }
     $scope.openHisto = function()
     {
-        interfaces.exe("AB123");      
-        $state.go("tabs.interface");
+        if($scope.history.interfaces[index]!=undefined)
+        {
+            $scope.interface.occurences = $scope.history.interfaces[index].interface.occurences;
+            $scope.interface.timers = $scope.history.interfaces[index].interface.timers;
+            $scope.interface.programs = $scope.history.interfaces[index].interface.programs;
+            $state.go("tabs.interface");
+        }
+        else
+            console.log('MOFO');
+        
     }
-    $scope.$on('interface_received', function(event, data)
-    {
-        for(var d in data.occ)
-        {
-            $scope.occurences.push({"tick":0, "mode": true, "exist": true, 'style': 'border-color: '+colors.palette_occ(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_occ(d), "data": []});
-            $scope.occurences[$scope.occurences.length-1].comportement = data.occ[d];
-        }
-
-        for(var d in data.min)
-        {
-            $scope.timers.push({"min":0, "sec":00, "msec":0, "occurrences":0, 'timer': undefined, "mode": true, 'style': 'border-color: '+colors.palette_min(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(d), "exist": true, "data": []});
-            $scope.timers[$scope.timers.length-1].comportement = data.min[d];
-        }
-        for(var d in data.kid)
-        {
-            $scope.preparation.usager={'id': data.kid[d].id, 'name':data.kid[d].name};
-        }
-    });  
 });

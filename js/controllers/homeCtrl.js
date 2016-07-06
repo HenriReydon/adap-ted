@@ -1,4 +1,4 @@
-app.controller('homeCtrl', function($scope, $ionicPopup, $timeout, interfaces, 
+app.controller('homeCtrl', function($scope, $ionicPopup, $timeout, 
                                     $state)
 {
     $scope.checkCode = function()

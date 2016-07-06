@@ -4,7 +4,6 @@ app.directive('interface', function($state, $location, $timeout, $rootScope, $co
 		restrict: 'A',
 		link: function ($scope, $element, $attrs)
 		{
-			console.log($attrs);
 			var race = $attrs.race;
 			rotation();
 

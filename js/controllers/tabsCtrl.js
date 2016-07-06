@@ -5,44 +5,46 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
 	{
 		if(etape == 1)
 		{		
-	    	if($scope.programs[$scope.parameters.index_pgm].timer_d==undefined)
+	    	if($scope.interface.programs[$scope.parameters.index_pgm].timer_d==undefined)
 	    	{
-	    		$scope.programs[$scope.parameters.index_pgm].timer_d = $timeout(function()
+	    		$scope.interface.programs[$scope.parameters.index_pgm].timer_d = $timeout(function()
 	    		{
-	        	$scope.programs[$scope.parameters.index_pgm].hour_tmp_d = new Date();
-	    			timer_d($scope.programs[$scope.parameters.index_pgm]);
+	        	$scope.interface.programs[$scope.parameters.index_pgm].hour_tmp_d = new Date();
+	    			timer_d($scope.interface.programs[$scope.parameters.index_pgm]);
 	    		},100);
 	    	}				    	
-			$scope.parameters.disabled_ask_task= true;	
-			$scope.parameters.disabled_time_delay_task= false;
-			$scope.parameters.disabled_resp_task= true;
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_ask_task= true;	
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_time_delay_task= false;
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_resp_task= true;
+			$scope.interface.programs[$scope.parameters.index_pgm].state_setpoint = 1;
 		} 
 		else 
 		{
-            $timeout.cancel($scope.programs[$scope.parameters.index_pgm].timer_d);
-            $scope.delayApprTmp = converter.zeroInit($scope.programs[$scope.parameters.index_pgm].min_d)+":"+converter.zeroInit($scope.programs[$scope.parameters.index_pgm].sec_d)+":"+$scope.programs[$scope.parameters.index_pgm].msec_d;
-	    	if($scope.programs[$scope.parameters.index_pgm].timer_r==undefined)
+            $timeout.cancel($scope.interface.programs[$scope.parameters.index_pgm].timer_d);
+            $scope.delayApprTmp = converter.zeroInit($scope.interface.programs[$scope.parameters.index_pgm].min_d)+":"+converter.zeroInit($scope.interface.programs[$scope.parameters.index_pgm].sec_d)+":"+$scope.interface.programs[$scope.parameters.index_pgm].msec_d;
+	    	if($scope.interface.programs[$scope.parameters.index_pgm].timer_r==undefined)
 	    	{
-	    		$scope.programs[$scope.parameters.index_pgm].timer_r = $timeout(function()
+	    		$scope.interface.programs[$scope.parameters.index_pgm].timer_r = $timeout(function()
 	    		{
-	    			$scope.programs[$scope.parameters.index_pgm].hour_tmp_r = new Date();
-	    			timer_r($scope.programs[$scope.parameters.index_pgm]);
+	    			$scope.interface.programs[$scope.parameters.index_pgm].hour_tmp_r = new Date();
+	    			timer_r($scope.interface.programs[$scope.parameters.index_pgm]);
 	    		},100);
 	    	}	
-			$scope.parameters.disabled_ask_task= true;	
-			$scope.parameters.disabled_time_delay_task= true;	
-			$scope.parameters.disabled_resp_task= false;	    	            
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_ask_task= true;	
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_time_delay_task= true;	
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_resp_task= false;
+			$scope.interface.programs[$scope.parameters.index_pgm].state_waiting = 1;    	            
 		}			
 	}
 
 	$scope.respTask = function(s, g, n)
 	{
-            $timeout.cancel($scope.programs[$scope.parameters.index_pgm].timer_r);
-            $scope.realApprTmp = converter.zeroInit($scope.programs[$scope.parameters.index_pgm].min_r)+":"+converter.zeroInit($scope.programs[$scope.parameters.index_pgm].sec_r)+":"+$scope.programs[$scope.parameters.index_pgm].msec_r;			
+            $timeout.cancel($scope.interface.programs[$scope.parameters.index_pgm].timer_r);
+            $scope.realApprTmp = converter.zeroInit($scope.interface.programs[$scope.parameters.index_pgm].min_r)+":"+converter.zeroInit($scope.interface.programs[$scope.parameters.index_pgm].sec_r)+":"+$scope.interface.programs[$scope.parameters.index_pgm].msec_r;			
             var dateJour = new Date();
         		var dateString = dateJour.getFullYear() + "-" + (dateJour.getMonth()+1) + "-" + dateJour.getDate();
-            $scope.programs[$scope.parameters.index_pgm].data.push({
-           			"debut": $scope.programs[$scope.parameters.index_pgm].hour_tmp_d,
+            $scope.interface.programs[$scope.parameters.index_pgm].data.push({
+           			"debut": $scope.interface.programs[$scope.parameters.index_pgm].hour_tmp_d,
            			"reaction": $scope.delayApprTmp,
            			"realisation": $scope.realApprTmp,
            			"seul": s,
@@ -51,33 +53,35 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
            			"datestring": dateString
 			});
 
-			$scope.parameters.disabled_ask_task= false;	
-			$scope.parameters.disabled_time_delay_task= true;	
-			$scope.parameters.disabled_resp_task= true;
-			$scope.programs[$scope.parameters.index_pgm].min_d = 0;			
-			$scope.programs[$scope.parameters.index_pgm].sec_d = 0;
-			$scope.programs[$scope.parameters.index_pgm].msec_d = 0;
-			$scope.programs[$scope.parameters.index_pgm].timer_d = undefined;
-			$scope.programs[$scope.parameters.index_pgm].min_r = 0;
-			$scope.programs[$scope.parameters.index_pgm].sec_r = 0;
-			$scope.programs[$scope.parameters.index_pgm].msec_r = 0;
-			$scope.programs[$scope.parameters.index_pgm].timer_r = undefined;
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_ask_task= false;	
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_time_delay_task= true;	
+			$scope.interface.programs[$scope.parameters.index_pgm].disabled_resp_task= true;
+			$scope.interface.programs[$scope.parameters.index_pgm].min_d = 0;			
+			$scope.interface.programs[$scope.parameters.index_pgm].sec_d = 0;
+			$scope.interface.programs[$scope.parameters.index_pgm].msec_d = 0;
+			$scope.interface.programs[$scope.parameters.index_pgm].timer_d = undefined;
+			$scope.interface.programs[$scope.parameters.index_pgm].min_r = 0;
+			$scope.interface.programs[$scope.parameters.index_pgm].sec_r = 0;
+			$scope.interface.programs[$scope.parameters.index_pgm].msec_r = 0;
+			$scope.interface.programs[$scope.parameters.index_pgm].timer_r = undefined;
+			$scope.interface.programs[$scope.parameters.index_pgm].state_setpoint = 0;
+			$scope.interface.programs[$scope.parameters.index_pgm].state_waiting = 0;  
 
 
-			$scope.programs[$scope.parameters.index_pgm].nb_s += s;
-			$scope.programs[$scope.parameters.index_pgm].nb_g += g;
-			$scope.programs[$scope.parameters.index_pgm].nb_n += n;
-			$scope.programs[$scope.parameters.index_pgm].cumul_d += converter.getTimerInSeconds($scope.delayApprTmp);
-			$scope.programs[$scope.parameters.index_pgm].avg_d = Math.round($scope.programs[$scope.parameters.index_pgm].cumul_d/($scope.programs[$scope.parameters.index_pgm].nb_s+$scope.programs[$scope.parameters.index_pgm].nb_g+$scope.programs[$scope.parameters.index_pgm].nb_n)*100)/100;
-			$scope.programs[$scope.parameters.index_pgm].cumul_r += converter.getTimerInSeconds($scope.realApprTmp);
-			$scope.programs[$scope.parameters.index_pgm].avg_r = Math.round($scope.programs[$scope.parameters.index_pgm].cumul_r/($scope.programs[$scope.parameters.index_pgm].nb_s+$scope.programs[$scope.parameters.index_pgm].nb_g+$scope.programs[$scope.parameters.index_pgm].nb_n)*100)/100;		
+			$scope.interface.programs[$scope.parameters.index_pgm].nb_s += s;
+			$scope.interface.programs[$scope.parameters.index_pgm].nb_g += g;
+			$scope.interface.programs[$scope.parameters.index_pgm].nb_n += n;
+			$scope.interface.programs[$scope.parameters.index_pgm].cumul_d += converter.getTimerInSeconds($scope.delayApprTmp);
+			$scope.interface.programs[$scope.parameters.index_pgm].avg_d = Math.round($scope.interface.programs[$scope.parameters.index_pgm].cumul_d/($scope.interface.programs[$scope.parameters.index_pgm].nb_s+$scope.interface.programs[$scope.parameters.index_pgm].nb_g+$scope.interface.programs[$scope.parameters.index_pgm].nb_n)*100)/100;
+			$scope.interface.programs[$scope.parameters.index_pgm].cumul_r += converter.getTimerInSeconds($scope.realApprTmp);
+			$scope.interface.programs[$scope.parameters.index_pgm].avg_r = Math.round($scope.interface.programs[$scope.parameters.index_pgm].cumul_r/($scope.interface.programs[$scope.parameters.index_pgm].nb_s+$scope.interface.programs[$scope.parameters.index_pgm].nb_g+$scope.interface.programs[$scope.parameters.index_pgm].nb_n)*100)/100;		
 	}
 
 	$scope.existATask = function()
 	{
-		for(var pro in $scope.programs)
+		for(var pro in $scope.interface.programs)
 		{
-			if($scope.programs[pro].behavior != undefined)
+			if($scope.interface.programs[pro].behavior != undefined)
 				return true;
 		}
 		return false;
@@ -86,9 +90,9 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
 	$scope.existAnothertask = function()
 	{
 		var count = 0;
-		for(var pro in $scope.programs)
+		for(var pro in $scope.interface.programs)
 		{
-			if($scope.programs[pro].behavior != undefined)
+			if($scope.interface.programs[pro].behavior != undefined)
 				count++;
 		}
 		if(count >=2)
@@ -102,7 +106,7 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
 		$scope.parameters.index_pgm--;
 		if($scope.parameters.index_pgm <= -1)
 			$scope.parameters.index_pgm = 2;
-		while($scope.programs[$scope.parameters.index_pgm].behavior==undefined)
+		while($scope.interface.programs[$scope.parameters.index_pgm].behavior==undefined)
 		{
 			$scope.parameters.index_pgm--;
 			if($scope.parameters.index_pgm < 0)
@@ -115,7 +119,7 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
 		$scope.parameters.index_pgm++;
 		if($scope.parameters.index_pgm > 2)
 			$scope.parameters.index_pgm = 0;
-		while($scope.programs[$scope.parameters.index_pgm].behavior==undefined)
+		while($scope.interface.programs[$scope.parameters.index_pgm].behavior==undefined)
 		{
 			$scope.parameters.index_pgm++;
 			if($scope.parameters.index_pgm > 2)

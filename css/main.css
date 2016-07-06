@@ -257,7 +257,7 @@
 
 #perspec div 
 {
-    background: url('../img/histo.png');
+    border: 3px solid black;
     background-size: 100% auto;
     width: 250px;
     height: 300px;

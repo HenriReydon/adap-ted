@@ -5,9 +5,9 @@ app.controller('alterableCtrl', function($scope, popups, $timeout, colors, behav
     */
     $scope.addOccurence = function()
     {
-        for(var o in $scope.occurences)
+        for(var o in $scope.interface.occurences)
         {
-            if(!$scope.occurences[o].exist)
+            if(!$scope.interface.occurences[o].exist)
             {
                 var max_occ = false;
                 if(o==5) max_occ = true;
@@ -25,9 +25,9 @@ app.controller('alterableCtrl', function($scope, popups, $timeout, colors, behav
 
     $scope.addTimer = function()
     {
-        for(var o in $scope.timers)
+        for(var o in $scope.interface.timers)
         {
-            if(!$scope.timers[o].exist)
+            if(!$scope.interface.timers[o].exist)
             {
                 var max_min = false;
                 if(o==3) max_min = true;
@@ -44,9 +44,9 @@ app.controller('alterableCtrl', function($scope, popups, $timeout, colors, behav
 
     $scope.addProgram = function()
     {
-        for(var o in $scope.programs)
+        for(var o in $scope.interface.programs)
         {
-            if(!$scope.programs[o].exist)
+            if(!$scope.interface.programs[o].exist)
             {
                 var max_pgm = false;
                 if(o==2) max_pgm = true;
@@ -77,7 +77,8 @@ app.controller('alterableCtrl', function($scope, popups, $timeout, colors, behav
     {
         buttons[index].exist = true;
         buttons[index].behavior = $scope.parameters.input_behavior;
-        buttons[index].likert.exist = $scope.parameters.input_behavior_likert;
+        if(buttons[index].likert!=undefined)
+            buttons[index].likert.exist = $scope.parameters.input_behavior_likert;
         delete $scope.parameters.input_behavior;
         delete $scope.parameters.input_behavior_likert;
         //$scope.removeBehavior(behaviors, $scope.chosen_bhv);

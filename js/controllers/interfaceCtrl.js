@@ -8,44 +8,6 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
         else $state.go('tabs.interface');
     }
 
-    $scope.$on('interface_received', function(event, data)
-    {
-        for(var d in data.kid)
-        {
-            $scope.preparation.usager = data.kid[d];
-        }
-
-        for(var d in data.sit)
-            $scope.preparation.sit = data.sit[d];
-        
-        programmes.exe($scope.preparation.usager.id, $scope.preparation.sit.id);
-        tasks.exe($scope.preparation.usager.id, $scope.preparation.sit.id);
-
-        for(var d in data.occ)
-        {
-            $scope.occurences.push({"tick":0, 
-                                    "mode": true, 
-                                    "exist": true, 
-                                    'style': 'min-height:'+$scope.parameters.height_occurences+'px !important;border-color: '+colors.palette_occ(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_occ(d), 
-                                    //'style': 'border-color: '+colors.palette_occ(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_occ(d), 
-                                    "data": []});
-            $scope.occurences[$scope.occurences.length-1].behavior = data.occ[d];
-        }
-
-        for(var d in data.min)
-        {
-            $scope.timers.push({"min":0, 
-                                   "sec":0, 
-                                   "msec":0, 
-                                   "occurrences":0, 
-                                   'timer': undefined, 
-                                   "mode": true, 
-                                   'style': 'min-height:'+$scope.parameters.height_timers+'px !important;border-color: '+colors.palette_min(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(d), 
-                                   "exist": true, "data": []});
-            $scope.timers[$scope.timers.length-1].behavior = data.min[d];
-        }
-    });      
-
     $scope.afficherBulleComportement = function()
     {
     	popups.behavior($scope);
@@ -53,18 +15,20 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
 
     $scope.incrementeOccurence = function(index)
     {
-    	$scope.occurences[index].tick+=1;
-        $scope.occurences[index].data.push(converter.getCurrentDate()+"&"+converter.getHour());
-        if($scope.occurences[index].likert.exist)
-            $scope.occurences[index].likert.disabled = false;
+    	$scope.interface.occurences[index].tick+=1;
+        $scope.interface.occurences[index].data.push(converter.getCurrentDate()+"&"+converter.getHour());
+        if($scope.interface.occurences[index].likert.exist)
+            $scope.interface.occurences[index].likert.disabled = false;
     }
 
-    $scope.setOccurenceIntensity = function(index)
+    $scope.setOccurenceIntensity = function(index_occ, index_int)
     {
-        $scope.occurences[index].tick+=1;
-        $scope.occurences[index].data.push(converter.getCurrentDate()+"&"+converter.getHour());
-        if($scope.occurences[index].likert.exist)
-            $scope.occurences[index].likert.disabled = false;
+        $scope.interface.occurences[index_occ].likert.disabled = true;
+    }
+
+    $scope.setTimerIntensity = function(index_tim, index_int)
+    {
+        $scope.interface.timers[index_tim].likert.disabled = true;
     }
 
     $scope.zeroInit = function(dat)
@@ -74,30 +38,26 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
 
     $scope.actionTimer = function(index)
     {
-    	if($scope.timers[index].timer==undefined)
+    	if($scope.interface.timers[index].timer==undefined)
     	{
-    		$scope.timers[index].timer = $timeout(function()
+    		$scope.interface.timers[index].timer = $timeout(function()
     		{
-                $scope.timers[index].hourTmp = new Date();
-    			timer($scope.timers[index], index);
+                $scope.interface.timers[index].hourTmp = new Date();
+    			timer($scope.interface.timers[index], index);
     		},10);
+            if($scope.interface.timers[index].likert.exist)
+                $scope.interface.timers[index].likert.disabled = false;
     	}
     	else
 		{
-            $scope.timers[index].occurrences++;
-            $timeout.cancel($scope.timers[index].timer);
-            d = $scope.timers[index].min+":"+$scope.timers[index].sec+":"+$scope.timers[index].msec;
-            $scope.timers[index].data.push({"h": $scope.timers[index].hourTmp, "d": d});
-			$scope.timers[index] = {"min":0, 
-                                       "sec":0, 
-                                       "msec":0, 
-                                       "occurrences":$scope.timers[index].occurrences, 
-                                       "behavior":$scope.timers[index].behavior, 
-                                       "timer": undefined, 
-                                       "mode": true, 
-                                       "exist": true, 
-                                       "style": "border-color: "+colors.palette_min(index)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(index),
-                                       "data": $scope.timers[index].data};
+            $scope.interface.timers[index].occurrences++;
+            $timeout.cancel($scope.interface.timers[index].timer);
+            d = $scope.interface.timers[index].min+":"+$scope.interface.timers[index].sec+":"+$scope.interface.timers[index].msec;
+            $scope.interface.timers[index].data.push({"h": $scope.interface.timers[index].hourTmp, "d": d});
+			$scope.interface.timers[index].min = 0; 
+            $scope.interface.timers[index].sec = 0;
+            $scope.interface.timers[index].msec = 0;
+            $scope.interface.timers[index].timer = undefined;
 
             $('#tim'+index+' .spantimer').removeClass('border-top');
             $('#tim'+index+' .spantimer').removeClass('border-right');

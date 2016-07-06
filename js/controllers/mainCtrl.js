@@ -5,7 +5,7 @@
 */
 
 app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
-                                 $rootScope, randomize, colors, behaviors, converter)
+                                 $rootScope, randomize, colors, behaviors, converter, tempsave)
 {
     //initHome();
     function initHome()
@@ -15,14 +15,11 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
         {
             'display_ul': false,
             'activate_valid': false,
-            'disabled_ask_task': false,
-            'disabled_resp_task': true,
-            'disabled_time_delay_task': true,
-            'disabled_ref_button': true,
-            'index_pgm': 0,
+            'index_pgm': 0,/*
             'height_occurences' : Math.round(window.innerHeight*18/100),
-            'height_timers' : Math.round(window.innerHeight*8/100),
-            'height_program' : Math.round(window.innerHeight*40/100)
+            'height_timers' : Math.round(window.innerHeight*8/100),*/
+            'height_program' : Math.round(window.innerHeight*40/100),
+            'history_limit' : 7
         };
 
         var french = 
@@ -38,10 +35,10 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
             "b_about" : "À propos",
             "b_transfert" : "Transferer",
             "b_use_ref" : "Lancer",
-            "b_ask_setpoint": "Poser la consigne",
+            "b_ask_setpoint": ["Poser la consigne", "Temps de réaction :"],
             "b_learn_alone": "Seul",
             "b_learn_guided": "Guidé",
-            "b_ask_waiting": "Attente de la réponse",
+            "b_ask_waiting": ["Attente de la réponse", "Temps de réalisation : "],
             "b_launch": "Commencer",
             "b_continue": "Reprendre",
 
@@ -66,6 +63,7 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
             "h_usage" : "UTILISATIONS",
             "h_tasks": "Analyses de tâches",
             "h_empty_tasks" : "La liste de tâche est vide.",
+            "h_comment" : "Commentaire",
 
             "m_about" : "Données non-synchronisées !",
             "m_history" : "Réutiliser une interface.",
@@ -87,10 +85,10 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
             "b_about" : "About",
             "b_transfert" : "Transfer",
             "b_use_ref" : "Launch",
-            "b_ask_setpoint": "Ask the setpoint",
+            "b_ask_setpoint": ["Ask the setpoint", "Reaction time :"],
             "b_learn_alone": "Alone",
             "b_learn_guided": "Guided", 
-            "b_ask_waiting": "Waiting for response",
+            "b_ask_waiting": ["Waiting for response", "Achievement time : "],
             "b_launch": "Begin",
             "b_continue": "Continue",
 
@@ -114,6 +112,7 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
             "h_usage" : "USAGES",
             "h_tasks": "Tasks analysis",
             "h_empty_tasks" : "Task list is empty.",
+            "h_comment" : "Comment here",
 
             "m_about" : "Data not synchronized !",
             "m_history" : "Reuse an interface.",
@@ -144,18 +143,19 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
 
     function clearData()
     {
-        $scope.occurences = [];
-        $scope.timers = [];
-        $scope.programs = [];
+        $scope.interface = {};
+        $scope.interface.occurences = [];
+        $scope.interface.timers = [];
+        $scope.interface.programs = [];
 
         $scope.behaviors = {};
     }
 
     function initAlterable()
     {
-        $scope.occurences = [];
-        $scope.timers = [];
-        $scope.programs = [];
+        $scope.interface.occurences = [];
+        $scope.interface.timers = [];
+        $scope.interface.programs = [];
 
         $scope.fileSystem = {};
 
@@ -177,11 +177,11 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
         for(var i=0; i<=7; i++)
         {
             if(i==6)
-                $scope.occurences.push({"mode":false, "exist": true});//false mean + button
+                $scope.interface.occurences.push({"mode":false, "exist": true});//false mean + button
             else
-                $scope.occurences.push({
+                $scope.interface.occurences.push({
                     "tick":0, "mode": true, "exist": false,
-                    "style": "color:#fddbc7 !important; background-color:"+colors.palette_occ(i)[1],
+                    "style": "border-color: "+colors.palette_occ(i)[1]+"; color:#fddbc7 !important; background-color:"+colors.palette_occ(i)[1],
                     "data": [],
                     "likert" : {
                         "legend": [$scope.texts.h_legend[0], $scope.texts.h_legend[1], $scope.texts.h_legend[2]],
@@ -197,27 +197,38 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
         for(var i=0; i<=4; i++)
         {
             if(i==4)
-                $scope.timers.push({"mode":false, "exist": true});//false mean + button
+                $scope.interface.timers.push({"mode":false, "exist": true});//false mean + button
             else
-                $scope.timers.push({"hourTmp":"",
+                $scope.interface.timers.push({"hourTmp":"",
                  "min":00, "sec":00, "msec":0,
                   "occurrences":0, 'timer': undefined,
                    "mode": true, "exist": false,
-                    "style": "border-color: "+colors.palette_min(i)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(i), "data": []});//false mean + button
+                    "style": "border-color: "+colors.palette_min(i)[1]+"; color: #fddbc7 !important; background-color:"+colors.palette_min(i)[1],
+                     "data": [],
+                    "likert" : {
+                        "legend": [$scope.texts.h_legend[0], $scope.texts.h_legend[1], $scope.texts.h_legend[2]],
+                        "style" : ["color:#fddbc7 !important; background-color:"+colors.palette_min(i)[0], 
+                                    "color:#fddbc7 !important; background-color:"+colors.palette_min(i)[1],
+                                    "color:#fddbc7 !important; background-color:"+colors.palette_min(i)[2]],
+                        "exist": false,
+                        "disabled" : true
+                    }
+                });//false mean + button
         }
 
         for(var i=0; i<=3; i++)
         {
             if(i==3)
-                $scope.programs.push({"mode":false, "exist": true});//false mean + button
+                $scope.interface.programs.push({"mode":false, "exist": true});//false mean + button
             else
-                $scope.programs.push({
+                $scope.interface.programs.push({
                 "hour_tmp_d":"",
                 "hour_tmp_r":"",                 
                 "min_d":0, "sec_d":0, "msec_d":0, "timer_d": undefined,
                 "min_r":0, "sec_r":0, "msec_r":0, "timer_r": undefined,
                 "nb_s": 0, "nb_g": 0, "nb_n": 0, "cumul_d":0, "avg_d": 0,"cumul_r":0, "avg_r": 0,
-                "mode": true, "exist": false,
+                "mode": true, "exist": false, "state_setpoint": 0, "state_waiting" : 0,
+                'disabled_ask_task': false, 'disabled_resp_task': true, 'disabled_time_delay_task': true,
                 "style": "border-color: "+colors.palette_pro(i)+"; color: #fddbc7 !important; background-color:"+colors.palette_pro(i),
                 "data": []});//false mean + button
         }
@@ -226,7 +237,7 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
     function initHistory()
     {
         $scope.history = {};
-        $scope.history.interfaces = [];
+        $scope.history.interfaces = [{"interface":{"occurences":[{"tick":0,"mode":true,"exist":true,"style":"border-color: #1b7837; color:#fddbc7 !important; background-color:#1b7837","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#328F4E","color:#fddbc7 !important; background-color:#1b7837","color:#fddbc7 !important; background-color:#075C21"],"disabled":true},"behavior":{"name":"Range son stylo"}},{"tick":0,"mode":true,"exist":true,"style":"border-color: #8c510a; color:#fddbc7 !important; background-color:#8c510a","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#AD6E24","color:#fddbc7 !important; background-color:#8c510a","color:#fddbc7 !important; background-color:#663700"],"exist":true,"disabled":true},"behavior":{"name":"Claque sur le visage"}},{"tick":0,"mode":true,"exist":true,"style":"border-color: #5ab4ac; color:#fddbc7 !important; background-color:#5ab4ac","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#89D4CF","color:#fddbc7 !important; background-color:#5ab4ac","color:#fddbc7 !important; background-color:#38968F"],"disabled":true},"behavior":{"name":"Se pince les doigts"}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #d73027; color:#fddbc7 !important; background-color:#d73027","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#E85850","color:#fddbc7 !important; background-color:#d73027","color:#fddbc7 !important; background-color:#AC1A12"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #B18B39; color:#fddbc7 !important; background-color:#B18B39","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#d8b365","color:#fddbc7 !important; background-color:#B18B39","color:#fddbc7 !important; background-color:#896517"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #01665e; color:#fddbc7 !important; background-color:#01665e","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#0C7B73","color:#fddbc7 !important; background-color:#01665e","color:#fddbc7 !important; background-color:#00504A"],"exist":false,"disabled":true}},{"mode":false,"exist":true},{"tick":0,"mode":true,"exist":false,"style":"border-color: undefined; color:#fddbc7 !important; background-color:undefined","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:undefined","color:#fddbc7 !important; background-color:undefined","color:#fddbc7 !important; background-color:undefined"],"exist":false,"disabled":true}}],"timers":[{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":true,"style":"border-color: #3288bd; color: #fddbc7 !important; background-color:#3288bd","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#53A0CD","color:#fddbc7 !important; background-color:#3288bd","color:#fddbc7 !important; background-color:#1175B0"],"disabled":true},"behavior":{"name":"Joue avec ses cheveux"}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":true,"style":"border-color: #af8dc3; color: #fddbc7 !important; background-color:#af8dc3","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#D3BDE0","color:#fddbc7 !important; background-color:#af8dc3","color:#fddbc7 !important; background-color:#8A5FA3"],"exist":true,"disabled":true},"behavior":{"name":"Pousse un cri continu"}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #E56D33; color: #fddbc7 !important; background-color:#E56D33","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#fc8d59","color:#fddbc7 !important; background-color:#E56D33","color:#fddbc7 !important; background-color:#BC4B15"],"exist":false,"disabled":true}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #d53e4f; color: #fddbc7 !important; background-color:#d53e4f","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#F06575","color:#fddbc7 !important; background-color:#d53e4f","color:#fddbc7 !important; background-color:#B91D2F"],"exist":false,"disabled":true}},{"mode":false,"exist":true}],"programs":[{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"mode":false,"exist":true}]}},{"interface":{"occurences":[{"tick":0,"mode":true,"exist":true,"style":"border-color: #1b7837; color:#fddbc7 !important; background-color:#1b7837","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#328F4E","color:#fddbc7 !important; background-color:#1b7837","color:#fddbc7 !important; background-color:#075C21"],"disabled":true},"behavior":{"name":"CA"}},{"tick":0,"mode":true,"exist":true,"style":"border-color: #8c510a; color:#fddbc7 !important; background-color:#8c510a","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#AD6E24","color:#fddbc7 !important; background-color:#8c510a","color:#fddbc7 !important; background-color:#663700"],"exist":true,"disabled":true},"behavior":{"name":"Crie"}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #5ab4ac; color:#fddbc7 !important; background-color:#5ab4ac","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#89D4CF","color:#fddbc7 !important; background-color:#5ab4ac","color:#fddbc7 !important; background-color:#38968F"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #d73027; color:#fddbc7 !important; background-color:#d73027","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#E85850","color:#fddbc7 !important; background-color:#d73027","color:#fddbc7 !important; background-color:#AC1A12"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #B18B39; color:#fddbc7 !important; background-color:#B18B39","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#d8b365","color:#fddbc7 !important; background-color:#B18B39","color:#fddbc7 !important; background-color:#896517"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #01665e; color:#fddbc7 !important; background-color:#01665e","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#0C7B73","color:#fddbc7 !important; background-color:#01665e","color:#fddbc7 !important; background-color:#00504A"],"exist":false,"disabled":true}},{"mode":false,"exist":true},{"tick":0,"mode":true,"exist":false,"style":"border-color: undefined; color:#fddbc7 !important; background-color:undefined","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:undefined","color:#fddbc7 !important; background-color:undefined","color:#fddbc7 !important; background-color:undefined"],"exist":false,"disabled":true}}],"timers":[{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #3288bd; color: #fddbc7 !important; background-color:#3288bd","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#53A0CD","color:#fddbc7 !important; background-color:#3288bd","color:#fddbc7 !important; background-color:#1175B0"],"exist":false,"disabled":true}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #af8dc3; color: #fddbc7 !important; background-color:#af8dc3","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#D3BDE0","color:#fddbc7 !important; background-color:#af8dc3","color:#fddbc7 !important; background-color:#8A5FA3"],"exist":false,"disabled":true}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #E56D33; color: #fddbc7 !important; background-color:#E56D33","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#fc8d59","color:#fddbc7 !important; background-color:#E56D33","color:#fddbc7 !important; background-color:#BC4B15"],"exist":false,"disabled":true}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #d53e4f; color: #fddbc7 !important; background-color:#d53e4f","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#F06575","color:#fddbc7 !important; background-color:#d53e4f","color:#fddbc7 !important; background-color:#B91D2F"],"exist":false,"disabled":true}},{"mode":false,"exist":true}],"programs":[{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":true,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[],"behavior":{"name":"Tenir le stylo"}},{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":true,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[],"behavior":{"name":"Retourner la feuille"}},{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"mode":false,"exist":true}]}},{"interface":{"occurences":[{"tick":0,"mode":true,"exist":true,"style":"border-color: #1b7837; color:#fddbc7 !important; background-color:#1b7837","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#328F4E","color:#fddbc7 !important; background-color:#1b7837","color:#fddbc7 !important; background-color:#075C21"],"disabled":true},"behavior":{"name":"Range son stylo"}},{"tick":0,"mode":true,"exist":true,"style":"border-color: #8c510a; color:#fddbc7 !important; background-color:#8c510a","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#AD6E24","color:#fddbc7 !important; background-color:#8c510a","color:#fddbc7 !important; background-color:#663700"],"exist":true,"disabled":true},"behavior":{"name":"Crie"}},{"tick":0,"mode":true,"exist":true,"style":"border-color: #5ab4ac; color:#fddbc7 !important; background-color:#5ab4ac","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#89D4CF","color:#fddbc7 !important; background-color:#5ab4ac","color:#fddbc7 !important; background-color:#38968F"],"disabled":true},"behavior":{"name":"Se pince les doigts"}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #d73027; color:#fddbc7 !important; background-color:#d73027","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#E85850","color:#fddbc7 !important; background-color:#d73027","color:#fddbc7 !important; background-color:#AC1A12"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #B18B39; color:#fddbc7 !important; background-color:#B18B39","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#d8b365","color:#fddbc7 !important; background-color:#B18B39","color:#fddbc7 !important; background-color:#896517"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #01665e; color:#fddbc7 !important; background-color:#01665e","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#0C7B73","color:#fddbc7 !important; background-color:#01665e","color:#fddbc7 !important; background-color:#00504A"],"exist":false,"disabled":true}},{"mode":false,"exist":true},{"tick":0,"mode":true,"exist":false,"style":"border-color: undefined; color:#fddbc7 !important; background-color:undefined","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:undefined","color:#fddbc7 !important; background-color:undefined","color:#fddbc7 !important; background-color:undefined"],"exist":false,"disabled":true}}],"timers":[{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":true,"style":"border-color: #3288bd; color: #fddbc7 !important; background-color:#3288bd","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#53A0CD","color:#fddbc7 !important; background-color:#3288bd","color:#fddbc7 !important; background-color:#1175B0"],"disabled":true},"behavior":{"name":"Joue avec ses cheveux"}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":true,"style":"border-color: #af8dc3; color: #fddbc7 !important; background-color:#af8dc3","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#D3BDE0","color:#fddbc7 !important; background-color:#af8dc3","color:#fddbc7 !important; background-color:#8A5FA3"],"exist":true,"disabled":true},"behavior":{"name":"Me mord"}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #E56D33; color: #fddbc7 !important; background-color:#E56D33","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#fc8d59","color:#fddbc7 !important; background-color:#E56D33","color:#fddbc7 !important; background-color:#BC4B15"],"exist":false,"disabled":true}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #d53e4f; color: #fddbc7 !important; background-color:#d53e4f","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#F06575","color:#fddbc7 !important; background-color:#d53e4f","color:#fddbc7 !important; background-color:#B91D2F"],"exist":false,"disabled":true}},{"mode":false,"exist":true}],"programs":[{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"mode":false,"exist":true}]}},{"interface":{"occurences":[{"tick":0,"mode":true,"exist":true,"style":"border-color: #1b7837; color:#fddbc7 !important; background-color:#1b7837","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#328F4E","color:#fddbc7 !important; background-color:#1b7837","color:#fddbc7 !important; background-color:#075C21"],"disabled":true},"behavior":{"name":"Jet d'objets"}},{"tick":0,"mode":true,"exist":true,"style":"border-color: #8c510a; color:#fddbc7 !important; background-color:#8c510a","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#AD6E24","color:#fddbc7 !important; background-color:#8c510a","color:#fddbc7 !important; background-color:#663700"],"exist":true,"disabled":true},"behavior":{"name":"Crie"}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #5ab4ac; color:#fddbc7 !important; background-color:#5ab4ac","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#89D4CF","color:#fddbc7 !important; background-color:#5ab4ac","color:#fddbc7 !important; background-color:#38968F"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #d73027; color:#fddbc7 !important; background-color:#d73027","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#E85850","color:#fddbc7 !important; background-color:#d73027","color:#fddbc7 !important; background-color:#AC1A12"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #B18B39; color:#fddbc7 !important; background-color:#B18B39","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#d8b365","color:#fddbc7 !important; background-color:#B18B39","color:#fddbc7 !important; background-color:#896517"],"exist":false,"disabled":true}},{"tick":0,"mode":true,"exist":false,"style":"border-color: #01665e; color:#fddbc7 !important; background-color:#01665e","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#0C7B73","color:#fddbc7 !important; background-color:#01665e","color:#fddbc7 !important; background-color:#00504A"],"exist":false,"disabled":true}},{"mode":false,"exist":true},{"tick":0,"mode":true,"exist":false,"style":"border-color: undefined; color:#fddbc7 !important; background-color:undefined","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:undefined","color:#fddbc7 !important; background-color:undefined","color:#fddbc7 !important; background-color:undefined"],"exist":false,"disabled":true}}],"timers":[{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":true,"style":"border-color: #3288bd; color: #fddbc7 !important; background-color:#3288bd","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#53A0CD","color:#fddbc7 !important; background-color:#3288bd","color:#fddbc7 !important; background-color:#1175B0"],"disabled":true},"behavior":{"name":"Lâcher le crayon"}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #af8dc3; color: #fddbc7 !important; background-color:#af8dc3","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#D3BDE0","color:#fddbc7 !important; background-color:#af8dc3","color:#fddbc7 !important; background-color:#8A5FA3"],"exist":false,"disabled":true}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #E56D33; color: #fddbc7 !important; background-color:#E56D33","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#fc8d59","color:#fddbc7 !important; background-color:#E56D33","color:#fddbc7 !important; background-color:#BC4B15"],"exist":false,"disabled":true}},{"hourTmp":"","min":0,"sec":0,"msec":0,"occurrences":0,"mode":true,"exist":false,"style":"border-color: #d53e4f; color: #fddbc7 !important; background-color:#d53e4f","data":[],"likert":{"legend":["Low","Medium","High"],"style":["color:#fddbc7 !important; background-color:#F06575","color:#fddbc7 !important; background-color:#d53e4f","color:#fddbc7 !important; background-color:#B91D2F"],"exist":false,"disabled":true}},{"mode":false,"exist":true}],"programs":[{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":true,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[],"behavior":{"name":"Dessiner un bonhomme"}},{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"hour_tmp_d":"","hour_tmp_r":"","min_d":0,"sec_d":0,"msec_d":0,"min_r":0,"sec_r":0,"msec_r":0,"nb_s":0,"nb_g":0,"nb_n":0,"cumul_d":0,"avg_d":0,"cumul_r":0,"avg_r":0,"mode":true,"exist":false,"state_setpoint":0,"state_waiting":0,"disabled_ask_task":false,"disabled_resp_task":true,"disabled_time_delay_task":true,"style":"border-color: #4A6169; color: #fddbc7 !important; background-color:#4A6169","data":[]},{"mode":false,"exist":true}]}}];
         $scope.history.builded = false;
     }
 
@@ -235,6 +246,18 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
     $scope.zeroInit = function(dat)
     {
         return converter.zeroInit(dat);
+    }
+
+    $scope.saveInterface = function()
+    {
+        $scope.history.interfaces.push({
+            'interface': {
+                'occurences' : $scope.interface.occurences,
+                'timers' : $scope.interface.timers,
+                'programs' : $scope.interface.programs
+            }
+        });
+        tempsave.exe($scope.history.interfaces);
     }
 
     $rootScope.$on("$stateChangeStart", function (event, to_state, to_params, from_state, from_params) 
@@ -278,6 +301,7 @@ app.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $state,
                 $scope.header_prepare = false;
                 $scope.header_history = true;
                 $scope.header_tasks = false;
+                $rootScope.$broadcast('build_history');
                 //initHistory();
           }
           else if(to_state.name=="tasks")
