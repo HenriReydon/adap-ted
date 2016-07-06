@@ -77,7 +77,8 @@ app.controller('alterableCtrl', function($scope, popups, $timeout, colors, behav
     {
         buttons[index].exist = true;
         buttons[index].behavior = $scope.parameters.input_behavior;
-        buttons[index].likert.exist = $scope.parameters.input_behavior_likert;
+        if(buttons[index].likert!=undefined)
+            buttons[index].likert.exist = $scope.parameters.input_behavior_likert;
         delete $scope.parameters.input_behavior;
         delete $scope.parameters.input_behavior_likert;
         //$scope.removeBehavior(behaviors, $scope.chosen_bhv);

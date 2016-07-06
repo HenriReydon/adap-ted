@@ -30,30 +30,36 @@
 					</span><br>
 				</p>
 			</div>
-			<button class="button button-full  button-royal" ng-click="askTask(1)" ng-disabled="parameters.disabled_ask_task">
-			{{texts.b_ask_setpoint}}
-			</button>      
-			<button class="button button-full  button-energized" ng-click="askTask(2)" ng-disabled="parameters.disabled_time_delay_task">
+			<button class="button button-full  button-calm" ng-click="askTask(1)" ng-disabled="programs[parameters.index_pgm].disabled_ask_task">
 				<span style="float:left;">
-				{{texts.b_ask_waiting}}
+					{{texts.b_ask_setpoint[programs[parameters.index_pgm].state_setpoint]}}
+				</span>
+			
+				<span class="spantimer">
+					{{zeroInit(programs[parameters.index_pgm].min_d)}}:{{zeroInit(programs[parameters.index_pgm].sec_d)}}
+				</span>
+			</button>      
+			<button class="button button-full  button-positive" ng-click="askTask(2)" ng-disabled="programs[parameters.index_pgm].disabled_time_delay_task">
+				<span style="float:left;">
+					{{texts.b_ask_waiting[programs[parameters.index_pgm].state_waiting]}}
 				</span>
 				<span class="spantimer">
-				{{zeroInit(programs[parameters.index_pgm].min_d)}}:{{zeroInit(programs[parameters.index_pgm].sec_d)}}<!-- :{{zeroInit(programs[parameters.index_pgm].msec_d)}} -->
+					{{zeroInit(programs[parameters.index_pgm].min_r)}}:{{zeroInit(programs[parameters.index_pgm].sec_r)}}
 				</span>
 			</button>     
 			<div class="button-bar">
-				<button class="button button-positive" style="padding: 3px 0;" ng-click="respTask(1, 0, 0)" ng-disabled="parameters.disabled_resp_task">
-				{{texts.b_learn_alone}}
+				<button class="button button-balanced" style="padding: 3px 0;" ng-click="respTask(1, 0, 0)" ng-disabled="programs[parameters.index_pgm].disabled_resp_task">
+					{{texts.b_learn_alone}}
 				</button>
-				<button class="button button-balanced" style="padding: 3px 0;" ng-click="respTask(0, 1, 0)" ng-disabled="parameters.disabled_resp_task">
-				{{texts.b_learn_guided}}
+				<button class="button button-royal" style="padding: 3px 0;" ng-click="respTask(0, 1, 0)" ng-disabled="programs[parameters.index_pgm].disabled_resp_task">
+					{{texts.b_learn_guided}}
 				</button>
-				<button class="button button-assertive" style="padding: 3px 0;" ng-click="respTask(0, 0, 1)" ng-disabled="parameters.disabled_resp_task">
-				NR
+				<button class="button button-assertive" style="padding: 3px 0;" ng-click="respTask(0, 0, 1)" ng-disabled="programs[parameters.index_pgm].disabled_resp_task">
+					NR
 				</button>
 			</div>
 		</div>
-		<div class="list card" ng-show="!existATask()">
+		<div ng-show="!existATask()">
 		<p>{{texts.h_empty_tasks}}</p>
 		</div>
 	</ion-side-menu>
@@ -76,7 +82,10 @@
 
 	<!-- Right menu -->
 	<ion-side-menu side="right">
-		
-		
+		<ul class="list" style="margin-top:42px;">
+			<li class="item">
+				<button ng-click="saveInterface()">SAVE</button>
+			</li>
+		</ul>
 	</ion-side-menu>
 </ion-side-menus>

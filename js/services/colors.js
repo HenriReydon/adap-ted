@@ -26,7 +26,10 @@ app.factory('colors', function()
 
 	pal.palette_min = function(position)
 	{
-		var colors = ['#fc8d59','#af8dc3','#d53e4f', '#3288bd'];
+		var colors = [['#fc8d59', '#E56D33', '#BC4B15'],
+						['#D3BDE0', '#af8dc3', '#8A5FA3'],
+						['#F06575', '#d53e4f', '#B91D2F'], 
+						['#53A0CD', '#3288bd', '#1175B0']];
 		var color = "";
 		var position = parseInt(position);
 		switch(position)

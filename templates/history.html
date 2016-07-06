@@ -5,8 +5,8 @@
             <i class="ion-help" style="margin:0 auto;"></i>
         </button>
     </div>
-    <div class="card" id="perspec">
-		<div ng-repeat="int in history.interfaces" interface race="{{int.race}}" style="{{int.style}};{{int.style2}};{{int.style3}}"></div>
+    <div id="perspec">
+		<div ng-repeat="int in history.interfaces" interface race="{{int.style.race}}" style="{{int.style.style}};{{int.style.style2}};{{int.style.style3}}"></div>
     </div>
-    <button class="button bouton-outline button-energized" style="position: absolute;right:50px;top: 500px;" ng-click="openHisto()">Ouvrir</button>
+    <button class="button bouton-outline button-energized" style="position: absolute;right:50px;top: 600px;" ng-click="openHisto()">Ouvrir</button>
 </ion-content>

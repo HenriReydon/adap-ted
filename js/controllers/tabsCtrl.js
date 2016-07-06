@@ -13,9 +13,10 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
 	    			timer_d($scope.programs[$scope.parameters.index_pgm]);
 	    		},100);
 	    	}				    	
-			$scope.parameters.disabled_ask_task= true;	
-			$scope.parameters.disabled_time_delay_task= false;
-			$scope.parameters.disabled_resp_task= true;
+			$scope.programs[$scope.parameters.index_pgm].disabled_ask_task= true;	
+			$scope.programs[$scope.parameters.index_pgm].disabled_time_delay_task= false;
+			$scope.programs[$scope.parameters.index_pgm].disabled_resp_task= true;
+			$scope.programs[$scope.parameters.index_pgm].state_setpoint = 1;
 		} 
 		else 
 		{
@@ -29,9 +30,10 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
 	    			timer_r($scope.programs[$scope.parameters.index_pgm]);
 	    		},100);
 	    	}	
-			$scope.parameters.disabled_ask_task= true;	
-			$scope.parameters.disabled_time_delay_task= true;	
-			$scope.parameters.disabled_resp_task= false;	    	            
+			$scope.programs[$scope.parameters.index_pgm].disabled_ask_task= true;	
+			$scope.programs[$scope.parameters.index_pgm].disabled_time_delay_task= true;	
+			$scope.programs[$scope.parameters.index_pgm].disabled_resp_task= false;
+			$scope.programs[$scope.parameters.index_pgm].state_waiting = 1;    	            
 		}			
 	}
 
@@ -51,9 +53,9 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
            			"datestring": dateString
 			});
 
-			$scope.parameters.disabled_ask_task= false;	
-			$scope.parameters.disabled_time_delay_task= true;	
-			$scope.parameters.disabled_resp_task= true;
+			$scope.programs[$scope.parameters.index_pgm].disabled_ask_task= false;	
+			$scope.programs[$scope.parameters.index_pgm].disabled_time_delay_task= true;	
+			$scope.programs[$scope.parameters.index_pgm].disabled_resp_task= true;
 			$scope.programs[$scope.parameters.index_pgm].min_d = 0;			
 			$scope.programs[$scope.parameters.index_pgm].sec_d = 0;
 			$scope.programs[$scope.parameters.index_pgm].msec_d = 0;
@@ -62,6 +64,8 @@ app.controller('tabsCtrl', function($scope, $ionicPopup, $timeout, popups, $root
 			$scope.programs[$scope.parameters.index_pgm].sec_r = 0;
 			$scope.programs[$scope.parameters.index_pgm].msec_r = 0;
 			$scope.programs[$scope.parameters.index_pgm].timer_r = undefined;
+			$scope.programs[$scope.parameters.index_pgm].state_setpoint = 0;
+			$scope.programs[$scope.parameters.index_pgm].state_waiting = 0;  
 
 
 			$scope.programs[$scope.parameters.index_pgm].nb_s += s;
