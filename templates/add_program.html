@@ -1,0 +1,9 @@
+<ul class="list">
+	<li class="item item-input">
+	    <i class="icon ion-search placeholder-icon"></i>
+	    <input ng-model="parameters.input_behavior.name" id="input-bhv" type="text" ng-change="changeInputBehavior(parameters.input_behavior.name)"/>
+  	</li>
+	<li class="item" ng-show="parameters.input_behavior.name.length>=1" ng-repeat="bhv in behaviors.programs | filter:parameters.input_behavior | limitTo: 5" ng-click="changeInputBehavior(bhv.name)">
+		{{bhv.name}}
+	</li>
+</ul>

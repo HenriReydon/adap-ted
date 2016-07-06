@@ -11,7 +11,7 @@ app.controller('alterableCtrl', function($scope, popups, $timeout, colors, behav
             {
                 var max_occ = false;
                 if(o==5) max_occ = true;
-                    popups.behavior($scope, $scope.behaviors.occurences, $scope.occurences, max_occ, o);
+                    popups.addOccurence($scope, max_occ, o);
                 break;
             }
         }
@@ -22,78 +22,74 @@ app.controller('alterableCtrl', function($scope, popups, $timeout, colors, behav
 
     }
 
-    $scope.addProgramm = function()
-    {
-        for(var o in $scope.occurences)
-        {
-            if(!$scope.occurences[o].exist)
-            {
-                var max_occ = false;
-                if(o==5) max_occ = true;
-                    popups.behavior($scope, $scope.behaviors.occurences, $scope.occurences, max_occ, o);
-                break;
-            }
-        }
-    }
 
-    
-
-    $scope.addMinuteur = function()
+    $scope.addTimer = function()
     {
-        for(var o in $scope.minuters)
+        for(var o in $scope.timers)
         {
-            if(!$scope.minuters[o].exist)
+            if(!$scope.timers[o].exist)
             {
                 var max_min = false;
                 if(o==3) max_min = true;
-                popups.behavior($scope, $scope.behaviors.minuters, $scope.minuters, max_min, o);
+                popups.addTimer($scope, max_min, o);
                 break;
             }
         }
     }
 
-    $scope.helpMinuteur = function()
+    $scope.helpTimer = function()
     {
         
     }
 
-    $scope.chooseBehavior = function(choix)
+    $scope.addProgram = function()
     {
-        document.getElementById('inputBhv').value = choix.name;
-        document.getElementById('inputBhv').style.border = "1px solid green";
-        $scope.parameters.displayUL = false;
-        $scope.chosen_bhv = choix;
-        $scope.parameters.activateValid = true;
+        for(var o in $scope.programs)
+        {
+            if(!$scope.programs[o].exist)
+            {
+                var max_pgm = false;
+                if(o==2) max_pgm = true;
+                    popups.addProgram($scope, max_pgm, o);
+                break;
+            }
+        }
     }
 
     $scope.changeInputBehavior = function(behavior_name)
     {
         if(behavior_name.length>0)
-            $scope.parameters.activateValid = true;
+        {
+            $scope.parameters.activate_valid = true;
+            var behavior = {};
+            $scope.parameters.input_behavior.name = behavior_name;
+            document.getElementById('input-bhv').value = behavior_name;
+            document.getElementById('input-bhv').style.border = "1px solid green";
+        }
         else
-            $scope.parameters.activateValid = false;
-        document.getElementById('inputBhv').style.border = "none";
-        var behavior = {};
-        behavior.name = behavior_name;
-        $scope.chooseBehavior(behavior);
-        $scope.parameters.displayUL= true;
+        {
+            $scope.parameters.activate_valid = false;
+            document.getElementById('input-bhv').style.border = "1px solid red";
+        }
     }
 
-    $scope.addBehavior = function(buttons, index, is_max, behavior)
+    $scope.addBehavior = function(buttons, index, is_max)
     {
-        buttons[index].exist=true;
-        buttons[index].behavior=$scope.chosen_bhv;
+        buttons[index].exist = true;
+        buttons[index].behavior = $scope.parameters.input_behavior;
+        buttons[index].likert.exist = $scope.parameters.input_behavior_likert;
+        delete $scope.parameters.input_behavior;
+        delete $scope.parameters.input_behavior_likert;
         //$scope.removeBehavior(behaviors, $scope.chosen_bhv);
-        $scope.parameters.displayUL = false;
-        $scope.parameters.activateValid = false;
+        $scope.parameters.display_ul = false;
+        $scope.parameters.activate_valid = false;
+        
         if(is_max)//If the maximum button is reached, hide the + button concerned
             buttons[parseInt(index)+1].exist = false;
 
-        $scope.fileSystem.waitingCommand = "update behaviors";
-        //$scope.checkFile();        
+        //$scope.fileSystem.waitingCommand = "update behaviors";
     }
 
-    $scope.fileSystem.waitingCommand = "read behaviors";
-    //$scope.checkFile();
+    //$scope.fileSystem.waitingCommand = "read behaviors";
     
 });

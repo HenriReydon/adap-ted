@@ -43,10 +43,6 @@ app.config(function($stateProvider, $urlRouterProvider)
       templateUrl: "templates/alterable.html",
       controller: "alterableCtrl"
     })  
-    .state('tasks', {
-      templateUrl: "templates/tasks.html",
-      controller: "tasksCtrl"
-    })  
     .state('debug', {
       templateUrl: "templates/debug.html"
     })

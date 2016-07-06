@@ -1,77 +1,154 @@
-<ion-content scroll="false">
+<ion-content scroll="true">
     <div class="list">
         <div class="item item-divider" style="margin-top:42px;">
-            <h2>{{texts.h_occurences}}</h2>
+            <h2>{{texts.h_occurences}} <italic>{{texts.h_frequency}}</italic></h2>
 <!--             <button class="button alterable-help button-outline button-calm" ng-click="helpOccurence()">
                 <i class="ion-help" style="margin:0 auto;"></i>
             </button> -->
         </div>     
         <div>
+            <div class="button-bar">
+                <button class="button limit" ng-click="incrementeOccurence(0)" ng-show="occurences[0].exist" style="{{occurences[0].style}}">
+                    <span class="spanocc">{{zeroInit(occurences[0].tick)}}</span>
+                    <br />
+                    <div class="buttonlegend">{{occurences[0].behavior.name}}</div>
+                </button>
+                <button class="button limit" ng-click="incrementeOccurence(1)" ng-show="occurences[1].exist" style="{{occurences[1].style}}">
+                    <span class="spanocc">{{zeroInit(occurences[1].tick)}}</span>
+                    <br />
+                    <div class="buttonlegend">{{occurences[1].behavior.name}}</div>
+                </button>
+                <button class="button limit" ng-click="incrementeOccurence(2)" ng-show="occurences[2].exist" style="{{occurences[2].style}}">
+                    <span class="spanocc">{{zeroInit(occurences[2].tick)}}</span>
+                    <br />
+                    <div class="buttonlegend">{{occurences[2].behavior.name}}</div>
+                </button>            
+            </div>        
+            <div class="button-bar">
+                <button class="button limit" ng-click="incrementeOccurence(3)" ng-show="occurences[3].exist" style="{{occurences[3].style}}">
+                    <span class="spanocc">{{zeroInit(occurences[3].tick)}}</span>
+                    <br />
+                    <div class="buttonlegend">{{occurences[3].behavior.name}}</div>
+                </button>
+                <button class="button limit" ng-click="incrementeOccurence(4)" ng-show="occurences[4].exist" style="{{occurences[4].style}}">
+                    <span class="spanocc">{{zeroInit(occurences[4].tick)}}</span>
+                    <br />
+                    <div class="buttonlegend">{{occurences[4].behavior.name}}</div>
+                </button>
+                <button class="button limit" ng-click="incrementeOccurence(5)" ng-show="occurences[5].exist" style="{{occurences[5].style}}">
+                    <span class="spanocc">{{zeroInit(occurences[5].tick)}}</span>
+                    <br />
+                    <div class="buttonlegend">{{occurences[5].behavior.name}}</div>
+                </button>            
+            </div>
+        </div>
+
+        <div class="item item-divider">
+            <h2>{{texts.h_likert}} <italic>{{texts.h_intensity}}</italic></h2>
+<!--             <button class="button alterable-help button-outline button-calm" ng-click="helpTimer()">
+                <i class="ion-help" style="margin:0 auto;"></i>
+            </button> -->
+        </div>
+
         <div class="button-bar">
-            <button class="button limit" ng-click="incrementeOccurence(0)" ng-show="occurences[0].exist" style="{{occurences[0].style}}">
-                <span class="spanocc">{{zeroInit(occurences[0].tick)}}</span>
-                <br />
-                <div class="buttonlegend">{{occurences[0].behavior.name}}</div>
+            <button class="button limit" ng-show="occurences[0].likert.exist"  ng-click="setOccurenceIntensity(0, 0)" style="{{occurences[0].likert.style[0]}}" ng-disabled="occurences[0].likert.disabled">
+                <div class="buttonlegend">{{occurences[0].likert.legend[0]}}</div>
             </button>
-            <button class="button limit" ng-click="incrementeOccurence(1)" ng-show="occurences[1].exist" style="{{occurences[1].style}}">
-                <span class="spanocc">{{zeroInit(occurences[1].tick)}}</span>
-                <br />
-                <div class="buttonlegend">{{occurences[1].behavior.name}}</div>
+            <button class="button limit" ng-show="occurences[0].likert.exist" ng-click="setOccurenceIntensity(0, 1)" style="{{occurences[0].likert.style[1]}}" ng-disabled="occurences[0].likert.disabled">
+                <div class="buttonlegend">{{occurences[0].likert.legend[1]}}</div>
             </button>
-            <button class="button limit" ng-click="incrementeOccurence(2)" ng-show="occurences[2].exist" style="{{occurences[2].style}}">
-                <span class="spanocc">{{zeroInit(occurences[2].tick)}}</span>
-                <br />
-                <div class="buttonlegend">{{occurences[2].behavior.name}}</div>
-            </button>            
-        </div>        
-        <div class="button-bar">
-            <button class="button limit" ng-click="incrementeOccurence(3)" ng-show="occurences[3].exist" style="{{occurences[3].style}}">
-                <span class="spanocc">{{zeroInit(occurences[3].tick)}}</span>
-                <br />
-                <div class="buttonlegend">{{occurences[3].behavior.name}}</div>
-            </button>
-            <button class="button limit" ng-click="incrementeOccurence(4)" ng-show="occurences[4].exist" style="{{occurences[4].style}}">
-                <span class="spanocc">{{zeroInit(occurences[4].tick)}}</span>
-                <br />
-                <div class="buttonlegend">{{occurences[4].behavior.name}}</div>
-            </button>
-            <button class="button limit" ng-click="incrementeOccurence(5)" ng-show="occurences[5].exist" style="{{occurences[5].style}}">
-                <span class="spanocc">{{zeroInit(occurences[5].tick)}}</span>
-                <br />
-                <div class="buttonlegend">{{occurences[5].behavior.name}}</div>
+            <button class="button limit" ng-show="occurences[0].likert.exist" ng-click="setOccurenceIntensity(0, 2)" style="{{occurences[0].likert.style[2]}}" ng-disabled="occurences[0].likert.disabled">
+                <div class="buttonlegend">{{occurences[0].likert.legend[2]}}</div>
             </button>            
         </div>
-    </div>
+
+        <div class="button-bar">
+            <button class="button limit" ng-show="occurences[1].likert.exist" style="{{occurences[1].likert.style[0]}}" ng-disabled="occurences[1].likert.disabled">
+                <div class="buttonlegend">{{occurences[1].likert.legend[0]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[1].likert.exist" style="{{occurences[1].likert.style[1]}}" ng-disabled="occurences[1].likert.disabled">
+                <div class="buttonlegend">{{occurences[1].likert.legend[1]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[1].likert.exist" style="{{occurences[1].likert.style[2]}}" ng-disabled="occurences[1].likert.disabled">
+                <div class="buttonlegend">{{occurences[1].likert.legend[2]}}</div>
+            </button>            
+        </div>
+
+        <div class="button-bar">
+            <button class="button limit" ng-show="occurences[2].likert.exist" style="{{occurences[2].likert.style[0]}}" ng-disabled="occurences[2].likert.disabled">
+                <div class="buttonlegend">{{occurences[2].likert.legend[0]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[2].likert.exist" style="{{occurences[2].likert.style[1]}}" ng-disabled="occurences[2].likert.disabled">
+                <div class="buttonlegend">{{occurences[2].likert.legend[1]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[2].likert.exist" style="{{occurences[2].likert.style[2]}}" ng-disabled="occurences[2].likert.disabled">
+                <div class="buttonlegend">{{occurences[2].likert.legend[2]}}</div>
+            </button>            
+        </div>
+
+        <div class="button-bar">
+            <button class="button limit" ng-show="occurences[3].likert.exist" style="{{occurences[3].likert.style[0]}}" ng-disabled="occurences[3].likert.disabled">
+                <div class="buttonlegend">{{occurences[3].likert.legend[0]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[3].likert.exist" style="{{occurences[3].likert.style[1]}}" ng-disabled="occurences[3].likert.disabled">
+                <div class="buttonlegend">{{occurences[3].likert.legend[1]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[3].likert.exist" style="{{occurences[3].likert.style[2]}}" ng-disabled="occurences[3].likert.disabled">
+                <div class="buttonlegend">{{occurences[3].likert.legend[2]}}</div>
+            </button>            
+        </div>
+
+        <div class="button-bar">
+            <button class="button limit" ng-show="occurences[4].likert.exist" style="{{occurences[4].likert.style[0]}}" ng-disabled="occurences[4].likert.disabled">
+                <div class="buttonlegend">{{occurences[4].likert.legend[0]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[4].likert.exist" style="{{occurences[4].likert.style[1]}}" ng-disabled="occurences[4].likert.disabled">
+                <div class="buttonlegend">{{occurences[4].likert.legend[1]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[4].likert.exist" style="{{occurences[4].likert.style[2]}}" ng-disabled="occurences[4].likert.disabled">
+                <div class="buttonlegend">{{occurences[4].likert.legend[2]}}</div>
+            </button>            
+        </div>
+
+        <div class="button-bar">
+            <button class="button limit" ng-show="occurences[5].likert.exist" style="{{occurences[5].likert.style[0]}}" ng-disabled="occurences[5].likert.disabled">
+                <div class="buttonlegend">{{occurences[5].likert.legend[0]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[5].likert.exist" style="{{occurences[5].likert.style[1]}}" ng-disabled="occurences[5].likert.disabled">
+                <div class="buttonlegend">{{occurences[5].likert.legend[1]}}</div>
+            </button>
+            <button class="button limit" ng-show="occurences[5].likert.exist" style="{{occurences[5].likert.style[2]}}" ng-disabled="occurences[5].likert.disabled">
+                <div class="buttonlegend">{{occurences[5].likert.legend[2]}}</div>
+            </button>            
+        </div>
+
         <div class="item item-divider">
-            <h2>{{texts.h_timers}}</h2>
-<!--             <button class="button alterable-help button-outline button-calm" ng-click="helpMinuteur()">
+            <h2>{{texts.h_timers}} <italic>{{texts.h_duration}}</italic></h2>
+<!--             <button class="button alterable-help button-outline button-calm" ng-click="helpTimer()">
                 <i class="ion-help" style="margin:0 auto;"></i>
             </button> -->
         </div>
         <div>
-        <button class="button button-block" ng-click="actionMinuteur(0)" ng-show="minuters[0].exist" style="{{minuters[0].style}}">
-            <span class="spancpt">{{zeroInit(minuters[0].occurrences)}}</span>
-            <span class="buttonlegend" style="font-size:95% !important;">{{minuters[0].behavior.name}}</span>
-            <span class="spantimer">{{zeroInit(minuters[0].min)}}:{{zeroInit(minuters[0].sec)}}<!-- :{{zeroInit(minuters[0].msec)}} --></span>
-        </button>
-        <button class="button button-block" ng-click="actionMinuteur(1)" ng-show="minuters[1].exist" style="{{minuters[1].style}}">
-            <span class="spancpt">{{zeroInit(minuters[1].occurrences)}}</span>
-            <span class="buttonlegend" style="font-size:95% !important;">{{minuters[1].behavior.name}}</span>
-            <span class="spantimer">{{zeroInit(minuters[1].min)}}:{{zeroInit(minuters[1].sec)}}<!-- :{{zeroInit(minuters[1].msec)}} --></span>
-        </button>
-        <button class="button button-block" ng-click="actionMinuteur(2)" ng-show="minuters[2].exist" style="{{minuters[2].style}}">
-            <span class="spancpt">{{zeroInit(minuters[2].occurrences)}}</span>
-            <span class="buttonlegend" style="font-size:95% !important;">{{minuters[2].behavior.name}}</span>
-            <span class="spantimer">{{zeroInit(minuters[2].min)}}:{{zeroInit(minuters[2].sec)}}<!-- :{{zeroInit(minuters[2].msec)}} --></span>
-        </button>
-        <button class="button button-block" ng-click="actionMinuteur(3)" ng-show="minuters[3].exist" style="{{minuters[3].style}}">
-            <span class="spancpt">{{zeroInit(minuters[3].occurrences)}}</span>
-            <span class="buttonlegend" style="font-size:95% !important;">{{minuters[3].behavior.name}}</span>
-            <span class="spantimer">{{zeroInit(minuters[3].min)}}:{{zeroInit(minuters[3].sec)}}<!-- :{{zeroInit(minuters[3].msec)}} --></span>
-        </button>
+            <button class="button button-block timer" ng-click="actionTimer(0)" id="tim0" ng-show="timers[0].exist" style="{{timers[0].style}}">
+                <span class="spancpt">{{zeroInit(timers[0].occurrences)}}</span>
+                <span class="buttonlegend" style="font-size:95% !important;">{{timers[0].behavior.name}}</span>
+                <span class="spantimer">{{zeroInit(timers[0].min)}}:{{zeroInit(timers[0].sec)}}<!-- :{{zeroInit(timers[0].msec)}} --></span>
+            </button>
+            <button class="button button-block timer" ng-click="actionTimer(1)" id="tim1" ng-show="timers[1].exist" style="{{timers[1].style}}">
+                <span class="spancpt">{{zeroInit(timers[1].occurrences)}}</span>
+                <span class="buttonlegend" style="font-size:95% !important;">{{timers[1].behavior.name}}</span>
+                <span class="spantimer">{{zeroInit(timers[1].min)}}:{{zeroInit(timers[1].sec)}}<!-- :{{zeroInit(timers[1].msec)}} --></span>
+            </button>
+            <button class="button button-block timer" ng-click="actionTimer(2)" id="tim2" ng-show="timers[2].exist" style="{{timers[2].style}}">
+                <span class="spancpt">{{zeroInit(timers[2].occurrences)}}</span>
+                <span class="buttonlegend" style="font-size:95% !important;">{{timers[2].behavior.name}}</span>
+                <span class="spantimer">{{zeroInit(timers[2].min)}}:{{zeroInit(timers[2].sec)}}<!-- :{{zeroInit(timers[2].msec)}} --></span>
+            </button>
+            <button class="button button-block timer" ng-click="actionTimer(3)" id="tim3" ng-show="timers[3].exist" style="{{timers[3].style}}">
+                <span class="spancpt">{{zeroInit(timers[3].occurrences)}}</span>
+                <span class="buttonlegend" style="font-size:95% !important;">{{timers[3].behavior.name}}</span>
+                <span class="spantimer">{{zeroInit(timers[3].min)}}:{{zeroInit(timers[3].sec)}}<!-- :{{zeroInit(timers[3].msec)}} --></span>
+            </button>
+        </div>
     </div>
-    </div>
-        <button class="button icon-right ion-android-sync button-light" ng-click="transfererInterface()" style="float:right;" >
-            {{texts.b_transfert}}
-        </button>  
 </ion-content>

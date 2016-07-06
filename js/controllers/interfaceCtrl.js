@@ -1,4 +1,4 @@
-app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $state, colors, converter, tasks, programmes)
+app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $state, colors, converter, programmes)
 {
     window.addEventListener('orientationchange', doOnOrientationChange);
     function doOnOrientationChange()
@@ -26,7 +26,7 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
             $scope.occurences.push({"tick":0, 
                                     "mode": true, 
                                     "exist": true, 
-                                    'style': 'min-height:'+$scope.parameters.heightOccurences+'px !important;border-color: '+colors.palette_occ(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_occ(d), 
+                                    'style': 'min-height:'+$scope.parameters.height_occurences+'px !important;border-color: '+colors.palette_occ(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_occ(d), 
                                     //'style': 'border-color: '+colors.palette_occ(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_occ(d), 
                                     "data": []});
             $scope.occurences[$scope.occurences.length-1].behavior = data.occ[d];
@@ -34,18 +34,18 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
 
         for(var d in data.min)
         {
-            $scope.minuters.push({"min":0, 
+            $scope.timers.push({"min":0, 
                                    "sec":0, 
                                    "msec":0, 
                                    "occurrences":0, 
                                    'timer': undefined, 
                                    "mode": true, 
-                                   'style': 'min-height:'+$scope.parameters.heightMinuteurs+'px !important;border-color: '+colors.palette_min(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(d), 
+                                   'style': 'min-height:'+$scope.parameters.height_timers+'px !important;border-color: '+colors.palette_min(d)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(d), 
                                    "exist": true, "data": []});
-            $scope.minuters[$scope.minuters.length-1].behavior = data.min[d];
+            $scope.timers[$scope.timers.length-1].behavior = data.min[d];
         }
     });      
-    // AIDE ???
+
     $scope.afficherBulleComportement = function()
     {
     	popups.behavior($scope);
@@ -55,6 +55,16 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
     {
     	$scope.occurences[index].tick+=1;
         $scope.occurences[index].data.push(converter.getCurrentDate()+"&"+converter.getHour());
+        if($scope.occurences[index].likert.exist)
+            $scope.occurences[index].likert.disabled = false;
+    }
+
+    $scope.setOccurenceIntensity = function(index)
+    {
+        $scope.occurences[index].tick+=1;
+        $scope.occurences[index].data.push(converter.getCurrentDate()+"&"+converter.getHour());
+        if($scope.occurences[index].likert.exist)
+            $scope.occurences[index].likert.disabled = false;
     }
 
     $scope.zeroInit = function(dat)
@@ -62,55 +72,83 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
         return converter.zeroInit(dat);
     }
 
-    $scope.actionMinuteur = function(index)
+    $scope.actionTimer = function(index)
     {
-    	if($scope.minuters[index].timer==undefined)
+    	if($scope.timers[index].timer==undefined)
     	{
-    		$scope.minuters[index].timer = $timeout(function()
+    		$scope.timers[index].timer = $timeout(function()
     		{
-                $scope.minuters[index].hourTmp = new Date();
-    			timer($scope.minuters[index]);
-    		},100);
+                $scope.timers[index].hourTmp = new Date();
+    			timer($scope.timers[index], index);
+    		},10);
     	}
     	else
 		{
-            $scope.minuters[index].occurrences++;
-            $timeout.cancel($scope.minuters[index].timer);
-            d = $scope.minuters[index].min+":"+$scope.minuters[index].sec+":"+$scope.minuters[index].msec;
-            $scope.minuters[index].data.push({"h": $scope.minuters[index].hourTmp, "d": d});
-			$scope.minuters[index] = {"min":0, 
+            $scope.timers[index].occurrences++;
+            $timeout.cancel($scope.timers[index].timer);
+            d = $scope.timers[index].min+":"+$scope.timers[index].sec+":"+$scope.timers[index].msec;
+            $scope.timers[index].data.push({"h": $scope.timers[index].hourTmp, "d": d});
+			$scope.timers[index] = {"min":0, 
                                        "sec":0, 
                                        "msec":0, 
-                                       "occurrences":$scope.minuters[index].occurrences, 
-                                       "behavior":$scope.minuters[index].behavior, 
+                                       "occurrences":$scope.timers[index].occurrences, 
+                                       "behavior":$scope.timers[index].behavior, 
                                        "timer": undefined, 
                                        "mode": true, 
                                        "exist": true, 
-                                       'style': 'min-height:'+$scope.parameters.heightMinuteurs+'px !important;border-color: '+colors.palette_min(index)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(index), "data": $scope.minuters[index].data};
+                                       "style": "border-color: "+colors.palette_min(index)+"; color: #fddbc7 !important; background-color:"+colors.palette_min(index),
+                                       "data": $scope.timers[index].data};
+
+            $('#tim'+index+' .spantimer').removeClass('border-top');
+            $('#tim'+index+' .spantimer').removeClass('border-right');
+            $('#tim'+index+' .spantimer').removeClass('border-left');
+            $('#tim'+index+' .spantimer').removeClass('border-bottom');
 		}
     }
 
     $scope.transfererInterface = function()
     { 
-        var sqlButtonOccurence = transfererOccurences();
-        var sqlButtonMinuteurs = transfererMinuteurs();
-        var sqlProgrammeData = transfererProgramme();
-        var allData = [{'occ': sqlButtonOccurence}, {'min': sqlButtonMinuteurs}, {'pgm': sqlProgrammeData}];
+        var allData = [{'occ': transfererOccurences()}, {'min': transfererTimers()}, {'pgm': transfererPrograme()}];
         transfert.exe(allData);
     } 
 
-    function timer(target)
+    function timer(target, index)
     {
         var now = new Date();
         var diff = now.getTime() - target.hourTmp.getTime();
         var diff = new Date(diff);
         target.timer = $timeout(function()
         {
+            if($('#tim'+index+' .spantimer').hasClass('border-top') )
+            {
+                $('#tim'+index+' .spantimer').removeClass('border-top');
+                $('#tim'+index+' .spantimer').addClass('border-right');
+            }
+            else if($('#tim'+index+' .spantimer').hasClass('border-right')) 
+            {
+                $('#tim'+index+' .spantimer').removeClass('border-right');
+                $('#tim'+index+' .spantimer').addClass('border-bottom');
+            }
+            else if($('#tim'+index+' .spantimer').hasClass('border-bottom'))
+            {
+                $('#tim'+index+' .spantimer').removeClass('border-bottom');
+                $('#tim'+index+' .spantimer').addClass('border-left');
+                
+            }
+            else if($('#tim'+index+' .spantimer').hasClass('border-left'))
+            {
+                $('#tim'+index+' .spantimer').removeClass('border-left');
+                $('#tim'+index+' .spantimer').addClass('border-top');
+            }
+            else
+            {
+                $('#tim'+index+' .spantimer').addClass('border-top');
+            }
             target.min = diff.getMinutes();
             target.sec = diff.getSeconds();
             target.msec = diff.getMilliseconds();
-            timer(target);
-        }, 10);        
+            timer(target, index);
+        }, 250);        
     }
     
     function transfererOccurences()
@@ -118,12 +156,12 @@ app.controller('interfaceCtrl', function($scope, popups, $timeout, $rootScope, $
         return -1;       
     }
 
-    function transfererMinuteurs()
+    function transfererTimers()
     {
         return -1;
     }
 
-    function transfererProgramme()
+    function transfererPrograme()
     {
         return -1;
     }
